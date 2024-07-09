@@ -12,15 +12,15 @@ namespace SalsesProject.Services
         {
             _context = context;
         }
-        public int Create(CustomerModel customer)
+        public bool Create(CustomerModel customer)
         {
             if(customer != null)
             {
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
-                return 1;
+                return true;
             }
-          return 0;
+          return false;
         }
 
         public int Delete(int id)

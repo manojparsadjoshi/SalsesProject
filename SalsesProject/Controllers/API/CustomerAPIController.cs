@@ -4,7 +4,7 @@ using SalsesProject.Data;
 using SalsesProject.Models;
 using SalsesProject.Services;
 
-namespace SalsesProject.Controllers
+namespace SalsesProject.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,9 +28,9 @@ namespace SalsesProject.Controllers
             return Ok(customers);
         }
         [HttpPost("Add")]
-        public int Create(CustomerModel customer)
+        public bool Create(CustomerModel customer)
         {
-            return (_services.Create(customer));
+            return _services.Create(customer);
         }
         [HttpGet("id")]
         public CustomerModel GetCustomerById(int id)
@@ -39,9 +39,11 @@ namespace SalsesProject.Controllers
             return customer;
         }
         [HttpPut("id")]
-        public void Update(CustomerModel customer)
+        public bool Update(CustomerModel customer)
         {
-          _services.Update(customer);
+            _services.Update(customer); 
+            return true;
+          
         }
         [HttpDelete("id")]
         public int Delete(int id)

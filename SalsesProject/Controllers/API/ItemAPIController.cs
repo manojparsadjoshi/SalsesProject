@@ -4,7 +4,7 @@ using SalsesProject.Data;
 using SalsesProject.Models;
 using SalsesProject.Services;
 
-namespace SalsesProject.Controllers
+namespace SalsesProject.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,7 +21,7 @@ namespace SalsesProject.Controllers
         public IActionResult GetItems()
         {
             List<ItemsModel> items = _services.GetAll();
-            if(items == null)
+            if (items == null)
             {
                 return NotFound();
             }
@@ -29,14 +29,14 @@ namespace SalsesProject.Controllers
         }
         [HttpPost]
         public int Create(ItemsModel item)
-        {       
+        {
             return _services.Create(item);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var item = _services.GetById(id);
-            if(id == 0)
+            if (id == 0)
             {
                 return NotFound();
             }

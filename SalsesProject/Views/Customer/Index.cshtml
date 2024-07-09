@@ -1,0 +1,80 @@
+﻿<div class="container mt-4">
+    <h1 class="text-center">Customer Details</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModel" data-bind="click: setCreateMode">
+        Add New Customer
+    </button>
+
+    <div class="modal fade" id="customerModel" tabindex="-1" aria-labelledby="customerModelLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModelLabel">
+                        <span data-bind="ifnot: IsUpdate">Add New Customer</span>
+                        <span data-bind="if: IsUpdate">Update Customer</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: CloseModel"></button>
+                </div>
+                <div class="modal-body" data-bind="with:newCustomer">
+                    <form>
+                        <div class="form-group">
+                            <label for="fullName">Full Name:</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" data-bind="value:customerName" />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactNumber">Contact Number:</label>
+                            <input type="text" class="form-control" id="contactNumber" placeholder="Enter your contact number" data-bind="value:contactNumber" />
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" class="form-control" id="address" placeholder="Enter your address" data-bind="value:address" />
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bind="click:$root.AddCustomer">
+                        <span data-bind="ifnot: IsUpdate">Create</span>
+                        <span data-bind="if: IsUpdate">Update</span>
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>S.N</th>
+                <th>Name</th>
+                <th>Contact Info</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:customerList">
+            <tr>
+                <td data-bind="text: $index() + 1"></td>
+                <td data-bind="text:customerName"></td>
+                <td data-bind="text:contactNumber"></td>
+                <td data-bind="text:address"></td>
+                <td>
+                    <button data-bind="click: $root.SelectCustomer" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#customerModel">Edit</button>
+                    <button data-bind="click: $root.DeleteCustomer" class="btn btn-sm btn-danger">Delete</button>
+                </td>
+            </tr>
+        </tbody> 
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/customer/customermodel.js"></script>
+    <script src="~/js/customer/customercontroller.js"></script>
+    <script>
+        {
+            var obj = new customerController();
+            ko.applyBindings(obj);
+        }
+    </script>
+}

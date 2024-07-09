@@ -26,9 +26,13 @@ namespace SalsesProject.Services
         public int Delete(int id)
         {
             var data = _context.Items.Find(id);
-            _context.Items.Remove(data);
-            _context.SaveChanges();
-            return id;
+            if(data != null)
+            {
+                _context.Items.Remove(data);
+                _context.SaveChanges();
+                return 1;
+            }
+            return 0;  
         }
 
         public List<ItemsModel> GetAll()

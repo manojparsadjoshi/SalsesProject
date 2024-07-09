@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SalsesProject.Models.VM;
 using SalsesProject.Services;
 
-namespace SalsesProject.Controllers
+namespace SalsesProject.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -30,7 +30,7 @@ namespace SalsesProject.Controllers
             return _salesDetailsServices.Create(vm);
         }
         [HttpPut]
-        public bool Update(SalesMasterVM obj) 
+        public bool Update(SalesMasterVM obj)
         {
             return _salesDetailsServices.Update(obj);
         }

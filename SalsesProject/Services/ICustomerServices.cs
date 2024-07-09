@@ -6,7 +6,7 @@ namespace SalsesProject.Services
     {
         List<CustomerModel> GetAll();
         CustomerModel GetById(int Id);
-        int Create(CustomerModel customer);
+        bool Create(CustomerModel customer);
         bool Update(CustomerModel customer);
         int Delete(int id);
     }
