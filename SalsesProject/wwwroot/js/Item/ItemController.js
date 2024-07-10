@@ -1,49 +1,46 @@
-﻿/// <reference path="../knockout.js" />
-/// <reference path="customermodel.js" />
-
+﻿/// <reference path="itemmodel.js" />
 const mode = {
     create: 1,
     update: 2
 };
 
-var customerController = function () {
+var itemController = function () {
     var self = this;
-    const baseUrl = "api/CustomerAPI";
-    self.customerList = ko.observableArray([]);
-    self.newCustomer = ko.observable(new customerModel());
+    const baseUrl = "api/ItemAPI";
+    self.ItemList = ko.observableArray([]);
+    self.NewItem = ko.observable(new itemModel());
+    self.SelectedList = ko.observable(new itemModel());
     self.IsUpdate = ko.observable(false);
-    self.selectedCustomer = ko.observable(new customerModel());
     self.mode = ko.observable(mode.create);
-
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
-            self.customerList(result.map(item => new customerModel(item)));
+            self.ItemList(result.map(item => new itemModel(item)));
         });
     }
     self.getdata();
 
-    self.AddCustomer = function () {
+    self.AddItem = function () {
         switch (self.mode()) {
             case mode.create:
-                ajax.post(baseUrl+"/Add", ko.toJSON(self.newCustomer()))
+                ajax.post(baseUrl, ko.toJSON(self.NewItem()))
                     .done(function (result) {
-                        self.customerList.push(new customerModel(result));
+                        self.ItemList.push(new itemModel(result));
                         self.resetForm();
                         self.getdata();
-                        $('#CustomerModel').model('hide');
+                        $('#customerModel').modal('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
                     });
                 break;
             case mode.update:
-                ajax.put(baseUrl+"/id", ko.toJSON(self.newCustomer()))
+                ajax.put(baseUrl+"/", self.NewItem().itemId(), ko.toJSON(self.NewItem()))
                     .done(function (result) {
-                        self.customerList.replace(self.selectedCustomer(), newCustomer(result));
+                        self.ItemList.replace(self.SelectedList(), new itemModel(result));
                         self.resetForm();
                         self.getdata();
-                        $('#CustomerModel').model('hide');
+                        $('#customerModel').modal('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -53,52 +50,50 @@ var customerController = function () {
                 console.log("Invalid mode");
         }
     };
-    self.DeleteCustomer = function (model) {
-       // debugger;
-        ajax.delete(baseUrl+"/id?id=" + model.customerId())
+
+    self.Deleteitem = function (model) {
+        ajax.delete(baseUrl + "/" + model.itemId())
             .done((result) => {
-                self.CustomerList.Remove(model);
+                self.ItemList.remove(model);
             })
             .fail((err) => {
                 console.log(err);
             });
     };
 
-    self.setCreateMode = function () {
-        self.resetForm();
-        $('#customerModal').modal('show');
-    };
-
-    self.resetForm = () => {
-        self.newCustomer(new customerModel());
-        self.IsUpdate(false);
-        self.mode(mode.create);
-    };
-    self.SelectCustomer = function (model) {
-       // debugger;
-        self.selectedCustomer(model);
-        self.newCustomer(new customerModel(ko.toJS(model)));
+    self.selectItem = function (model) {
+        self.SelectedList(model);
+        self.NewItem(new itemModel(ko.toJS(model)));
         self.IsUpdate(true);
         self.mode(mode.update);
-        $('#customerModal').modal('show');
-    }
+        $('#customerModel').modal('hide');
+    };
+
+    self.setCreateMode = function () {
+        self.resetForm();
+        $('#customerModel').modal('hide');
+    };
 
     self.CloseModel = function () {
         self.resetForm();
-        $('#orderModel').modal('hide');
+        $('#customerModel').modal('hide');
     }
-}            
+    
 
-
-
+    self.resetForm = () => {
+        self.NewItem(new itemModel());
+        self.IsUpdate(false);
+        self.mode(mode.create);
+    };
+}
 
 var ajax = {
     get: function (url) {
         return $.ajax({
             method: "GET",
             url: url,
-            async: false,
-        });
+            async: false
+        })
     },
     post: function (url, data) {
         return $.ajax({
@@ -108,7 +103,7 @@ var ajax = {
             },
             method: "POST",
             url: url,
-            data: (data)
+            data: data
         });
     },
     put: function (url, data) {
@@ -128,4 +123,4 @@ var ajax = {
             url: route,
         });
     }
-};
+}

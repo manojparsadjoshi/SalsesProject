@@ -13,23 +13,24 @@ namespace SalsesProject.Services
         {
             _context = context;
         }
-        public bool Create(SalesMasterVM vm)
+        public bool Create(SalesMasterVM model)
         {
             var masterData = new SalesMasterModel()
             {
                 Id = 0,
-                SalesDate = vm.SalesDate,
-                CustomerId = vm.CustomerId,
-                InvoiceNumber = vm.InvoiceNumber,
-                BillAmount = vm.BillAmount,
-                Discount = vm.Discount,
-                NetAmount = vm.NetAmount
+                SalesDate = model.SalesDate,
+                CustomerId = model.CustomerId,
+                InvoiceNumber = model.InvoiceNumber,
+                BillAmount = model.BillAmount,
+                Discount = model.Discount,
+                NetAmount = model.NetAmount
             };
             var masterdata = _context.masterModels.Add(masterData);
             _context.SaveChanges();
-            if(masterdata != null)
+
+            if (masterdata != null)
             {
-                var detail = from a in vm.Sales
+                var detail = from a in model.Sales
                              select new SalesDetailsModel()
                              {
                                  Id = 0,
@@ -56,8 +57,8 @@ namespace SalsesProject.Services
             }
             else
             {
-                var existingDetailData = _context.DetailsModels.Where(x =>x.SalesMasterId == existingMasterData.Id).ToList();
-                if(existingDetailData.Count > 0)
+                var existingDetailData = _context.DetailsModels.Where(x => x.SalesMasterId == existingMasterData.Id).ToList();
+                if (existingDetailData.Count > 0)
                 {
                     _context.DetailsModels.RemoveRange(existingDetailData);
                     _context.SaveChanges();
@@ -73,16 +74,18 @@ namespace SalsesProject.Services
         {
             List<SalesMasterVM> datas = new List<SalesMasterVM>();
             var masterdata = _context.masterModels.ToList();
-            if(masterdata.Count > 0)
+            if (masterdata.Count > 0)
             {
-                foreach(var item in masterdata)
+                foreach (var item in masterdata)
                 {
+                    var customersData = _context.Customers.Find(item.CustomerId);
                     var details = _context.DetailsModels.Where(x => x.SalesMasterId == item.Id).ToList();
                     var data = new SalesMasterVM()
                     {
                         Id = item.Id,
                         SalesDate = item.SalesDate,
                         CustomerId = item.CustomerId,
+                        CustomerName = customersData.CustomerName,
                         InvoiceNumber = item.InvoiceNumber,
                         BillAmount = item.BillAmount,
                         Discount = item.Discount,
@@ -175,6 +178,24 @@ namespace SalsesProject.Services
                 _context.SaveChanges();
                 return true;
             };
+        }
+         public IEnumerable<GetCustomersNameVM> GetCustomersName()
+         {
+            var customers = _context.Customers.Select(customer => new GetCustomersNameVM
+            {
+                CustomerId = customer.CustomerId,
+                CustomerName = customer.CustomerName,
+            }).ToList();
+            return customers;
+         }
+        public IEnumerable<GetItemsNameVM> GetItemsName()
+        {
+            var items = _context.Items.Select(item => new GetItemsNameVM
+            {
+                ItemId = item.ItemId,
+                ItemName = item.ItemName,
+            }).ToList();
+            return items;
         }
     }
 }

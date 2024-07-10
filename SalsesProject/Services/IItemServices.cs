@@ -6,8 +6,8 @@ namespace SalsesProject.Services
     {
         List<ItemsModel> GetAll();
         ItemsModel GetById(int id);
-        int Create(ItemsModel item);
-        int Update(ItemsModel item);
+        bool Create(ItemsModel item);
+        bool Update(ItemsModel item);
         int Delete(int id);
     }
 }

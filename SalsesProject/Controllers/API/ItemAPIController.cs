@@ -28,7 +28,7 @@ namespace SalsesProject.Controllers.API
             return Ok(items);
         }
         [HttpPost]
-        public int Create(ItemsModel item)
+        public bool Create(ItemsModel item)
         {
             return _services.Create(item);
         }

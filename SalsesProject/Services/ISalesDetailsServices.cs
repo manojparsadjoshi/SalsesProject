@@ -9,5 +9,7 @@ namespace SalsesProject.Services
         bool Create(SalesMasterVM vm);
         bool Update(SalesMasterVM obj);
         int Delete(int id);
+        IEnumerable<GetCustomersNameVM> GetCustomersName();
+        IEnumerable<GetItemsNameVM> GetItemsName();
     }
 }

@@ -5,7 +5,7 @@ using SalsesProject.Services;
 
 namespace SalsesProject.Controllers.API
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class SalesDetailsAPIServices : ControllerBase
     {
@@ -39,5 +39,17 @@ namespace SalsesProject.Controllers.API
         {
             return _salesDetailsServices.Delete(id);
         }
+        [HttpGet]
+        public IEnumerable<GetCustomersNameVM> GetCustomersName()
+        {
+            return _salesDetailsServices.GetCustomersName();
+        }
+
+        [HttpGet]
+        public IEnumerable<GetItemsNameVM> GetItemsName()
+        {
+            return _salesDetailsServices.GetItemsName();
+        }
+
     }
 }

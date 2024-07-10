@@ -11,15 +11,15 @@ namespace SalsesProject.Services
         {
             _context = context;
         }
-        public int Create(ItemsModel items)
+        public bool Create(ItemsModel items)
         {
             if (items == null)
             {
-                return 0;
+                return false;
             }
             _context.Items.Add(items);
             _context.SaveChanges();
-            return 1;
+            return true;
 
         }
 
@@ -47,11 +47,19 @@ namespace SalsesProject.Services
             return data;
         }
 
-        public int Update(ItemsModel item)
+        public bool Update(ItemsModel item)
         {
-            _context.Items.Update(item);
-            _context.SaveChanges();
-            return 1;
+            var itemdata = _context.Items.Find(item.ItemId);
+            if(itemdata != null )
+            {
+                itemdata.ItemName = item.ItemName;
+                itemdata.Unit = item.Unit;
+                itemdata.Category = item.Category;
+                _context.Items.Update(itemdata);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }
