@@ -103,7 +103,7 @@ var masterDeteilsController = function () {
     }
 
     self.DeleteSales = function (model) {
-        debugger;
+        ////debugger;
         console.log("Deleting sale with ID:", model.id());
         ajax.delete(baseUrl + "/Delete?id=" + model.id())
             .done(function (result) {

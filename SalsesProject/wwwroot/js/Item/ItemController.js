@@ -35,7 +35,8 @@ var itemController = function () {
                     });
                 break;
             case mode.update:
-                ajax.put(baseUrl+"/", self.NewItem().itemId(), ko.toJSON(self.NewItem()))
+               // debugger;
+                ajax.put(baseUrl+"/" + self.NewItem().itemId(), ko.toJSON(self.NewItem()))
                     .done(function (result) {
                         self.ItemList.replace(self.SelectedList(), new itemModel(result));
                         self.resetForm();
@@ -52,7 +53,8 @@ var itemController = function () {
     };
 
     self.Deleteitem = function (model) {
-        ajax.delete(baseUrl + "/" + model.itemId())
+        //debugger;
+        ajax.delete(baseUrl +"?id="+ model.itemId())
             .done((result) => {
                 self.ItemList.remove(model);
             })
