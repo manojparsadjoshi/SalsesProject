@@ -68,51 +68,48 @@ var masterDeteilsController = function () {
     self.getItemsName();
 
     self.AddSales = function () {
-        debugger
         var salesData = ko.toJS(self.newSales());
-        console.log("Data being sent:", JSON.stringify(salesData)); 
         if (self.IsUpdate()) {
-            ajax.put(baseUrl +"/Update", JSON.stringify(salesData))
+            ajax.put(baseUrl + "/Updates", JSON.stringify(salesData))
                 .done(function (result) {
-                    var updateSales = new masterModelVM(result);
+                    var updatedSales = new mastermodelVM(result);
                     var index = self.SalesList().findIndex(function (item) {
-                        return item.id() ===  updateSales.id();
+                        return item.id() === updatedSales.id();
                     });
                     if (index >= 0) {
-                        self.SalesList.replace(self.SalesList()[index], updateSales);
+                        self.SalesList.replace(self.SalesList()[index], updatedSales);
                     }
                     self.resetForm();
                     self.getData();
-                    $('#salesModel').modal('hide');
+                    $('#salesModal').modal('hide');
                 })
                 .fail(function (err) {
                     console.error("Error updating sales:", err);
                 });
         }
         else {
-            //debugger;
-            ajax.post('api/SalesDetailsAPIServices/Add', JSON.stringify(salesData))
+
+            ajax.post(baseUrl +"/Add", ko.toJSON(self.newSales()))
                 .done(function (result) {
-                    self.SalesList.push(new masterModelVM(result));
+                    self.SalesList.push(new mastermodelVM(result));
                     self.resetForm();
                     self.getData();
                     $('#salesModal').modal('hide');
                 })
                 .fail(function (err) {
                     console.error("Error adding sales:", err);
-                });
+                });;
         }
     }
 
     self.DeleteSales = function (model) {
+        debugger;
         console.log("Deleting sale with ID:", model.id());
-        ajax.delete(baseUrl + "/Delete", model.id())
+        ajax.delete(baseUrl + "/Delete?id=" + model.id())
             .done(function (result) {
-                console.log("Delete successful, removing from list");
                 self.SalesList.remove(function (item) {
                     return item.id() === model.id();
                 });
-                console.log("Current sales list:", self.SalesList());
             }).fail(function (err) {
                 console.error("Error deleting sale:", err);
             });
@@ -130,7 +127,7 @@ var masterDeteilsController = function () {
 
         // Update NewSales with the cloned and formatted model
         self.newSales(new masterModelVM(clonedModel));
-        self.IsUpdate(true);
+        self.IsUpdate(false);
         $('#salesModal').modal('show');
     }
 
