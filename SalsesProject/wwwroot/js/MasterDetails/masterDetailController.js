@@ -1,34 +1,29 @@
-﻿/// <reference path="masterdeteilmodel.js" />
-/// <reference path="../knockout.js" />
+﻿/// <reference path="../knockout.js" />
 
 
 const mode = {
     create: 1,
     update: 2
 };
-
-
-var masterDeteilsController = function () {
+var masterdetailsController = function () {
     var self = this;
-    const baseUrl = "api/SalesDetailsAPIServices";
-
-   
+    const baseUrl = "/api/SalesDetailsAPIServices";
     self.SalesList = ko.observableArray([]);
-    self.CustomerNameList = ko.observableArray([]);
-    self.ItemNameList = ko.observableArray([]);
-    self.newSales = ko.observable(new masterModelVM());
-    self.selectedSales = ko.observable(new masterModelVM());
-    self.IsUpdate = ko.observable(false);
-
-
+    self.CustomersNameList = ko.observableArray([]);
+    self.ItemsNameList = ko.observableArray([]);
+    self.NewSales = ko.observable(new mastermodelVM());
+    self.SelectedSales = ko.observable(new mastermodelVM());
+    self.IsUpdated = ko.observable(false);
+    //self.NewSales().sales.push(new detailsmodelVM());
+    //Get All Data
     self.getData = function () {
-        ajax.get(baseUrl+"/GetAll").then(function (result) {
-            self.SalesList(result.map(item => new masterModelVM(item)));
+        ajax.get(baseUrl + "/GetAll").then(function (result) {
+            self.SalesList(result.map(item => new mastermodelVM(item)));
         });
     }
     self.getData();
 
-    //Get CustomerName
+    // Get CustomerNames
 
     self.getCustomersName = function () {
         var url = baseUrl + "/GetCustomersName";
@@ -37,10 +32,10 @@ var masterDeteilsController = function () {
         return ajax.get(url).then(function (data) {
             // console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
-                return new customerNameModel(item);
+                return new customernamemodel(item);
             });
-            self.CustomerNameList(mappedProducts);
-            console.log("Customers Data: ", self.CustomerNameList());
+            self.CustomersNameList(mappedProducts);
+            console.log("Customers Data: ", self.CustomersNameList());
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching customersname: ", textStatus, errorThrown);
         });
@@ -50,16 +45,16 @@ var masterDeteilsController = function () {
 
     //Get ItemNames
     self.getItemsName = function () {
-        var url = baseUrl +"/GetItemsName";
+        var url = baseUrl + "/GetItemsName";
         console.log("Fetching products from URL: " + url);
 
         return ajax.get(url).then(function (data) {
             // console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
-                return new itemNameModel(item);
+                return new itemnamemodel(item);
             });
-            self.ItemNameList(mappedProducts);
-            console.log("Items Data: ", self.ItemNameList());
+            self.ItemsNameList(mappedProducts);
+            console.log("Items Data: ", self.ItemsNameList());
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching itemsname: ", textStatus, errorThrown);
         });
@@ -68,9 +63,9 @@ var masterDeteilsController = function () {
     self.getItemsName();
 
     self.AddSales = function () {
-        var salesData = ko.toJS(self.newSales());
-        if (self.IsUpdate()) {
-            ajax.put(baseUrl + "/Updates", JSON.stringify(salesData))
+        var salesData = ko.toJS(self.NewSales());
+        if (self.IsUpdated()) {
+            ajax.put(baseUrl + "/Update", JSON.stringify(salesData))
                 .done(function (result) {
                     var updatedSales = new mastermodelVM(result);
                     var index = self.SalesList().findIndex(function (item) {
@@ -89,7 +84,7 @@ var masterDeteilsController = function () {
         }
         else {
 
-            ajax.post(baseUrl +"/Add", ko.toJSON(self.newSales()))
+            ajax.post(baseUrl + "/Add", ko.toJSON(self.NewSales()))
                 .done(function (result) {
                     self.SalesList.push(new mastermodelVM(result));
                     self.resetForm();
@@ -103,8 +98,6 @@ var masterDeteilsController = function () {
     }
 
     self.DeleteSales = function (model) {
-        ////debugger;
-        console.log("Deleting sale with ID:", model.id());
         ajax.delete(baseUrl + "/Delete?id=" + model.id())
             .done(function (result) {
                 self.SalesList.remove(function (item) {
@@ -114,6 +107,7 @@ var masterDeteilsController = function () {
                 console.error("Error deleting sale:", err);
             });
     };
+
 
 
     self.SelectSale = function (model) {
@@ -126,32 +120,33 @@ var masterDeteilsController = function () {
         }
 
         // Update NewSales with the cloned and formatted model
-        self.newSales(new masterModelVM(clonedModel));
-        self.IsUpdate(false);
+        self.NewSales(new mastermodelVM(clonedModel));
+        self.IsUpdated(true);
         $('#salesModal').modal('show');
     }
 
 
     self.resetForm = () => {
-        self.newSales(new masterModelVM());
-        self.IsUpdate(false);
+        self.NewSales(new mastermodelVM());
+        self.IsUpdated(false);
     };
 
 
     self.AddItem = function () {
-        self.newSales().sales.push(new detailsModelVM());
+        self.NewSales().sales.push(new detailsmodelVM());
     };
-
     self.removeItem = function (item) {
-        self.newSales().sales.Remove(item);
+        self.NewSales().sales.remove(item);
     };
 };
+
+
 
 var ajax = {
     get: function (url) {
         return $.ajax({
             method: "GET",
-            url : url,
+            url: url,
             async: false,
         });
     },
@@ -163,7 +158,7 @@ var ajax = {
             },
             method: "POST",
             url: url,
-            data: data
+            data: (data)
         });
     },
     put: function (url, data) {

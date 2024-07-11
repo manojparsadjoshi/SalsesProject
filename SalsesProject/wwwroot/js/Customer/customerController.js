@@ -31,19 +31,19 @@ var customerController = function () {
                         self.customerList.push(new customerModel(result));
                         self.resetForm();
                         self.getdata();
-                        $('#CustomerModel').model('hide');
+                        $('#customerModel').modal('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
                     });
                 break;
             case mode.update:
-                ajax.put(baseUrl+"/id", ko.toJSON(self.newCustomer()))
+                ajax.put(baseUrl + "/id", ko.toJSON(self.newCustomer()))
                     .done(function (result) {
-                        self.customerList.replace(self.selectedCustomer(), newCustomer(result));
+                        self.customerList.replace(self.selectedCustomer(), newCustomer());
                         self.resetForm();
                         self.getdata();
-                        $('#CustomerModel').model('hide');
+                        $('#customerModel').model('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -57,7 +57,7 @@ var customerController = function () {
        // debugger;
         ajax.delete(baseUrl+"/id?id=" + model.customerId())
             .done((result) => {
-                self.CustomerList.Remove(model);
+                self.customerList.remove(model);
             })
             .fail((err) => {
                 console.log(err);
@@ -66,7 +66,7 @@ var customerController = function () {
 
     self.setCreateMode = function () {
         self.resetForm();
-        $('#customerModal').modal('show');
+        $('#customerModel').modal('hide');
     };
 
     self.resetForm = () => {
@@ -80,12 +80,12 @@ var customerController = function () {
         self.newCustomer(new customerModel(ko.toJS(model)));
         self.IsUpdate(true);
         self.mode(mode.update);
-        $('#customerModal').modal('show');
+        $('#customerModel').modal('show');
     }
 
     self.CloseModel = function () {
         self.resetForm();
-        $('#orderModel').modal('hide');
+        $('#customerModel').modal('hide');
     }
 }            
 

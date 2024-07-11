@@ -28,7 +28,7 @@ var itemController = function () {
                         self.ItemList.push(new itemModel(result));
                         self.resetForm();
                         self.getdata();
-                        $('#customerModel').modal('hide');
+                        $('#itemModal').modal('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -41,7 +41,7 @@ var itemController = function () {
                         self.ItemList.replace(self.SelectedList(), new itemModel(result));
                         self.resetForm();
                         self.getdata();
-                        $('#customerModel').modal('hide');
+                        $('#itemModal').modal('hide');
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -68,17 +68,17 @@ var itemController = function () {
         self.NewItem(new itemModel(ko.toJS(model)));
         self.IsUpdate(true);
         self.mode(mode.update);
-        $('#customerModel').modal('hide');
+        $('#itemModal').modal('show');
     };
 
     self.setCreateMode = function () {
         self.resetForm();
-        $('#customerModel').modal('hide');
+        $('#itemModal').modal('hide');
     };
 
     self.CloseModel = function () {
         self.resetForm();
-        $('#customerModel').modal('hide');
+        $('#itemModal').modal('hide');
     }
     
 

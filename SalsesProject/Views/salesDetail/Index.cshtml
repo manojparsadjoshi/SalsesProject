@@ -1,5 +1,5 @@
 ﻿<div class="container mt-4">
-    <h2> SalesProject System</h2>
+    <h2>SalesProject System</h2>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesModal">
         Create New Order
     </button>
@@ -9,14 +9,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="salesModalLabel">
-                        <span data-bind="ifnot: IsUpdate">Create New Order</span>
-                        <span data-bind="if: IsUpdate">Update Order</span>
+                        <span data-bind="ifnot: IsUpdated">Create New Order</span>
+                        <span data-bind="if: IsUpdated">Update Order</span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @* data-bind="click: CloseModel" *@></button>
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="row" data-bind="with: newSales">
+                        <div class="row" data-bind="with: NewSales">
                             <div class="col-md-4 form-group">
                                 <label>Sales Date:</label>
                                 <input type="datetime-local" class="form-control" data-bind="value: salesDate">
@@ -24,7 +24,7 @@
                             <div class="col-md-4 form-group">
                                 <label>Customer Name:</label>
                                 <select class="form-control" name="customername"
-                                        data-bind="options:$root.CustomerNameList,
+                                        data-bind="options:$root.CustomersNameList,
                                     optionsText: 'customerName',
                                     optionsValue: 'customerId',
                                     value: customerId,
@@ -60,11 +60,11 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody data-bind="foreach: newSales().sales">
+                            <tbody data-bind="foreach: NewSales().sales">
                                 <tr>
                                     <td>
                                         <select class="form-control" name="itemname"
-                                                data-bind="options: $root.ItemNameList,
+                                                data-bind="options: $root.ItemsNameList,
                                                 optionsText: 'itemName',
                                                 optionsValue: 'itemId',
                                                 value: itemId,
@@ -89,8 +89,8 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-bind="click: $root.AddSales">
-                        <span data-bind="ifnot: IsUpdate">Create</span>
-                        <span data-bind="if: IsUpdate">Update</span>
+                        <span data-bind="ifnot: IsUpdated">Create</span>
+                        <span data-bind="if: IsUpdated">Update</span>
                     </button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -128,13 +128,14 @@
     </table>
 </div>
 @section Scripts
-{   
+{
+    <script src="~/js/knockout.js"></script>
     <script src="~/js/masterdetails/masterdetailcontroller.js"></script>
     <script src="~/js/masterdetails/masterdeteilmodel.js"></script>
-    <script src="~/js/knockout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            var obj = new masterDeteilsController();
+            var obj = new masterdetailsController();
             ko.applyBindings(obj);
         });
     </script>
