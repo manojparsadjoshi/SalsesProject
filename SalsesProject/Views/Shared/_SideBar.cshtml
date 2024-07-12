@@ -1,0 +1,52 @@
+﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
+        <a class="sidebar-brand brand-logo" asp-controller="Home" asp-action="Index"><img src="/assets/images/logo.svg" alt="logo" /></a>
+        <a class="sidebar-brand brand-logo-mini pl-4 pt-3" asp-controller="Login" asp-action="Index"><img src="/assets/images/logo-mini.svg" alt="logo" /></a>
+    </div>
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                    <img src="/assets/images/faces/face1.jpg" alt="profile" />
+                    <span class="login-status online"></span>
+                    <!--change to offline or busy as needed-->
+                </div>
+                <div class="nav-profile-text d-flex flex-column pr-3">
+                    <span class="font-weight-medium mb-2">Henry Klein</span>
+                    <span class="font-weight-normal">$8,753.00</span>
+                </div>
+                <span class="badge badge-danger text-white ml-3 rounded">3</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                <i class="mdi mdi-home menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Customer" asp-action="index">
+                <i class="mdi mdi-contacts menu-icon"></i>
+                <span class="menu-title">Customer</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Item" asp-action="index">
+                <i class="mdi mdi-contacts menu-icon"></i>
+                <span class="menu-title">Items</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="salesDetail" asp-action="Index">
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                <span class="menu-title">Sales</span>
+            </a>
+        </li>
+
+        <li>
+            <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm">
+                <button type="submit" class="btn btn-link nav-link">Sign Out</button>
+            </form>
+        </li>
+    </ul>
+</nav>

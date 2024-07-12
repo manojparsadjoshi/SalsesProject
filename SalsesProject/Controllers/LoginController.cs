@@ -21,8 +21,14 @@ namespace SalsesProject.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
+
+        [HttpPost]
         public IActionResult Login(LogInModel model)
         {
             if (ModelState.IsValid)
@@ -31,15 +37,16 @@ namespace SalsesProject.Controllers
                 if (user != null)
                 {
                     IdentityUtils.AddingClaimIdentity(model, user.Roless ?? "user", HttpContext);
-                    return Redirect("/");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("Password", "Invalid Username or Password");
+                    ModelState.AddModelError("", "Invalid Username or Password");
                 }
             }
-            return View("Index");
+            return View(model);
         }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()

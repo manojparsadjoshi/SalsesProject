@@ -29,9 +29,8 @@ var customerController = function () {
                 ajax.post(baseUrl+"/Add", ko.toJSON(self.newCustomer()))
                     .done(function (result) {
                         self.customerList.push(new customerModel(result));
-                        self.resetForm();
                         self.getdata();
-                        $('#customerModel').modal('hide');
+                        self.CloseModel();
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -40,10 +39,10 @@ var customerController = function () {
             case mode.update:
                 ajax.put(baseUrl + "/id", ko.toJSON(self.newCustomer()))
                     .done(function (result) {
-                        self.customerList.replace(self.selectedCustomer(), newCustomer());
+                        self.customerList.replace(self.newCustomer());
                         self.resetForm();
                         self.getdata();
-                        $('#customerModel').model('hide');
+                        self.CloseModel();
                     })
                     .fail(function (err) {
                         console.log(err);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SalsesProject.Data;
 using SalsesProject.Services;
@@ -20,7 +21,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         //config.ExpireTimeSpan = TimeSpan.FromMinutes(25);
         config.LoginPath = "/Login/Index";
-        config.AccessDeniedPath = "/home/AccessDenied";
+        config.AccessDeniedPath = "/Home/AccessDenied";
     });
 
 builder.Services.AddAuthorization(options =>
@@ -34,6 +35,11 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
     options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
+
+    // Add this line to require authentication by default
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
 });
 
 var app = builder.Build();

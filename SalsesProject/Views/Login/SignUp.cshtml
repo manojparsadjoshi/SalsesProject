@@ -1,35 +1,37 @@
 ﻿@model  SignUpModel
-<h4>Sign Up</h4>
-<form asp-action="SignUp" class="center">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-
-
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Username" class="control-label"></label>
-            <input class="form-control" asp-for="Username" />
-            <span asp-validation-for="Username"></span>
+<div class="col">
+    <form asp-action="SignUp" class="center">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <h4>Sign Up</h4>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input class="form-control" asp-for="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input class="form-control" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input class="form-control" asp-for="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input class="form-control" asp-for="ConfirmPassword" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" value="Create Account" class="btn btn-primary ml-2" />
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
-            <input class="form-control" asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="control-label"></label>
-            <input class="form-control" asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ConfirmPassword" class="control-label"></label>
-            <input class="form-control" asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword"></span>
-        </div>
-        <div>
-            <input type="submit" value="Create Account" class="btn btn-primary ml-2" />
-        </div>
-    </div>
-</form>
+    </form>
+</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
