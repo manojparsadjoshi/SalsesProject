@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using SalsesProject.Data;
 using SalsesProject.Services;
@@ -11,6 +12,29 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<ICustomerServices, CustomerService>();
 builder.Services.AddTransient<IItemServices,ItemServices>();
 builder.Services.AddScoped<ISalesDetailsServices, SalesDetailsServices>();
+builder.Services.AddTransient<IUserService, UserService>();
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(config =>
+    {
+        //config.ExpireTimeSpan = TimeSpan.FromMinutes(25);
+        config.LoginPath = "/Login/Index";
+        config.AccessDeniedPath = "/home/AccessDenied";
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    //options.AddPolicy("admin",
+    //   policy => policy.RequireRole("admin"));
+
+    //options.FallbackPolicy = new AuthorizationPolicyBuilder()
+    //.RequireAuthenticatedUser()
+    //.Build();
+
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
+});
 
 var app = builder.Build();
 
@@ -28,7 +52,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

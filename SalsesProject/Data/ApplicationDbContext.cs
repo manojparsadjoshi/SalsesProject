@@ -13,5 +13,8 @@ namespace SalsesProject.Data
         public DbSet<ItemsModel> Items { get; set; }
         public DbSet<SalesMasterModel> masterModels { get; set; }
         public DbSet<SalesDetailsModel> DetailsModels { get; set; }
+        public DbSet<UserModel> Users { get; set; }
+        public DbSet<SalsesProject.Models.LogInModel> LogInModel { get; set; } = default!;
+
     }
 }
