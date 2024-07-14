@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using SalsesProject.Data;
+﻿using Sales.Db;
 using SalsesProject.Models;
 
-namespace SalsesProject.Services
+namespace Sales.Services.Item
 {
     public class ItemServices : IItemServices
     {
@@ -26,13 +25,13 @@ namespace SalsesProject.Services
         public int Delete(int id)
         {
             var data = _context.Items.Find(id);
-            if(data != null)
+            if (data != null)
             {
                 _context.Items.Remove(data);
                 _context.SaveChanges();
                 return 1;
             }
-            return 0;  
+            return 0;
         }
 
         public List<ItemsModel> GetAll()
@@ -50,7 +49,7 @@ namespace SalsesProject.Services
         public bool Update(ItemsModel item)
         {
             var itemdata = _context.Items.Find(item.ItemId);
-            if(itemdata != null )
+            if (itemdata != null)
             {
                 itemdata.ItemName = item.ItemName;
                 itemdata.Unit = item.Unit;

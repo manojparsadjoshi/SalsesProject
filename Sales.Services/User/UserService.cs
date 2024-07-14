@@ -1,7 +1,7 @@
-﻿using SalsesProject.Data;
+﻿using Sales.Db;
 using SalsesProject.Models;
 
-namespace SalsesProject.Services
+namespace Sales.Services.User
 {
     public class UserService : IUserService
     {
@@ -13,14 +13,14 @@ namespace SalsesProject.Services
         public UserModel GetUserWithRole(string userName, string password)
         {
             UserModel checkdata = new UserModel();
-                checkdata =_context.Users.FirstOrDefault(x => x.Username == userName && x.Password == password);
+            checkdata = _context.Users.FirstOrDefault(x => x.Username == userName && x.Password == password);
             return checkdata;
         }
 
         public bool RegisterUser(UserModel userdata)
         {
             bool existUser = _context.Users.Count(x => x.Username == userdata.Username) > 0;
-            if(!existUser) 
+            if (!existUser)
             {
                 _context.Users.Add(userdata);
                 _context.SaveChanges();
@@ -31,7 +31,7 @@ namespace SalsesProject.Services
 
         public bool ValidateLogin(string userName, string password)
         {
-            bool validUser = _context.Users.Any(x =>x.Username == userName && x.Password == password);
+            bool validUser = _context.Users.Any(x => x.Username == userName && x.Password == password);
             return validUser;
         }
     }

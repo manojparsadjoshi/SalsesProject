@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SalsesProject.Data;
-using SalsesProject.Services;
+using Sales.Db;
+using Sales.Services.Customer;
+using Sales.Services.Item;
+using Sales.Services.MasterDetail;
+using Sales.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

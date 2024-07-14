@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sales.Services.MasterDetail;
 using SalsesProject.Models.VM;
-using SalsesProject.Services;
 
 namespace SalsesProject.Controllers.API
 {

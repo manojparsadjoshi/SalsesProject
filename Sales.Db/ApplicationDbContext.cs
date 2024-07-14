@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalsesProject.Models;
 
-namespace SalsesProject.Data
+namespace Sales.Db
 {
     public class ApplicationDbContext : DbContext
     {
@@ -14,7 +14,7 @@ namespace SalsesProject.Data
         public DbSet<SalesMasterModel> masterModels { get; set; }
         public DbSet<SalesDetailsModel> DetailsModels { get; set; }
         public DbSet<UserModel> Users { get; set; }
-        public DbSet<SalsesProject.Models.LogInModel> LogInModel { get; set; } = default!;
+        public DbSet<LogInModel> LogInModel { get; set; }
 
     }
 }

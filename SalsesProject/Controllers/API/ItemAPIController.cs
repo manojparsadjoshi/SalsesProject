@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SalsesProject.Data;
+using Sales.Services.Item;
 using SalsesProject.Models;
-using SalsesProject.Services;
 
 namespace SalsesProject.Controllers.API
 {
@@ -10,11 +9,11 @@ namespace SalsesProject.Controllers.API
     [ApiController]
     public class ItemAPIController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        
         private readonly IItemServices _services;
-        public ItemAPIController(ApplicationDbContext context, IItemServices services)
+        public ItemAPIController( IItemServices services)
         {
-            _context = context;
+            
             _services = services;
         }
         [HttpGet]

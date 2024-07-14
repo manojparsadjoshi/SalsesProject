@@ -26,4 +26,9 @@
     <Folder Include="wwwroot\Custom\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sales.Db\Sales.Db.csproj" />
+    <ProjectReference Include="..\Sales.Services\Sales.Services.csproj" />
+  </ItemGroup>
+
 </Project>

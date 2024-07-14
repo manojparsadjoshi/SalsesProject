@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SalsesProject.Data;
+using Sales.Db;
 using SalsesProject.Models;
 using SalsesProject.Models.VM;
 
-namespace SalsesProject.Services
+namespace Sales.Services.MasterDetail
 {
     public class SalesDetailsServices : ISalesDetailsServices
 
@@ -179,15 +179,15 @@ namespace SalsesProject.Services
                 return true;
             };
         }
-         public IEnumerable<GetCustomersNameVM> GetCustomersName()
-         {
+        public IEnumerable<GetCustomersNameVM> GetCustomersName()
+        {
             var customers = _context.Customers.Select(customer => new GetCustomersNameVM
             {
                 CustomerId = customer.CustomerId,
                 CustomerName = customer.CustomerName,
             }).ToList();
             return customers;
-         }
+        }
         public IEnumerable<GetItemsNameVM> GetItemsName()
         {
             var items = _context.Items.Select(item => new GetItemsNameVM

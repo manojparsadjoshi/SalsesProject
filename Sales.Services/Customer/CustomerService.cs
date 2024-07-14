@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using SalsesProject.Data;
-using SalsesProject.Migrations;
+﻿using Sales.Db;
 using SalsesProject.Models;
 
-namespace SalsesProject.Services
+namespace Sales.Services.Customer
 {
     public class CustomerService : ICustomerServices
     {
@@ -14,19 +12,19 @@ namespace SalsesProject.Services
         }
         public bool Create(CustomerModel customer)
         {
-            if(customer != null)
+            if (customer != null)
             {
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
                 return true;
             }
-          return false;
+            return false;
         }
 
         public int Delete(int id)
         {
             var existiingData = _context.Customers.Find(id);
-            if(existiingData != null)
+            if (existiingData != null)
             {
                 _context.Customers.Remove(existiingData);
                 _context.SaveChanges();
@@ -36,19 +34,19 @@ namespace SalsesProject.Services
         }
 
         public List<CustomerModel> GetAll()
-        {                    
-               return _context.Customers.ToList();          
+        {
+            return _context.Customers.ToList();
         }
 
         public CustomerModel GetById(int Id)
-        {                    
-               return _context.Customers.Find(Id);                                
+        {
+            return _context.Customers.Find(Id);
         }
 
         public bool Update(CustomerModel customer)
         {
             var existingdata = _context.Customers.Find(customer.CustomerId);
-            if(existingdata != null)
+            if (existingdata != null)
             {
                 existingdata.Address = customer.Address;
                 existingdata.CustomerName = customer.CustomerName;

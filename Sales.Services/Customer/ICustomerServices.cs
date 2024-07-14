@@ -1,6 +1,6 @@
 ﻿using SalsesProject.Models;
 
-namespace SalsesProject.Services
+namespace Sales.Services.Customer
 {
     public interface ICustomerServices
     {

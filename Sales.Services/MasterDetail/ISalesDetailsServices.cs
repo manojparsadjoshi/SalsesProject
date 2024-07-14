@@ -1,6 +1,6 @@
 ﻿using SalsesProject.Models.VM;
 
-namespace SalsesProject.Services
+namespace Sales.Services.MasterDetail
 {
     public interface ISalesDetailsServices
     {
