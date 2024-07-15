@@ -15,6 +15,7 @@ var customerController = function () {
     self.selectedCustomer = ko.observable(new customerModel());
     self.mode = ko.observable(mode.create);
     self.newCustomer().errors = ko.validation.group(self.newCustomer());
+    self.customerToDelete = ko.observable();
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
@@ -58,15 +59,38 @@ var customerController = function () {
             self.newCustomer().errors.showAllMessages();
         }
     };
+    //self.DeleteCustomer = function (model) {
+    //   // debugger;
+    //    ajax.delete(baseUrl+"/id?id=" + model.customerId())
+    //        .done((result) => {
+    //            self.customerList.remove(model);
+    //        })
+    //        .fail((err) => {
+    //            console.log(err);
+    //        });
+    //};
+
+
     self.DeleteCustomer = function (model) {
-       // debugger;
-        ajax.delete(baseUrl+"/id?id=" + model.customerId())
-            .done((result) => {
-                self.customerList.remove(model);
-            })
-            .fail((err) => {
-                console.log(err);
-            });
+        self.customerToDelete(model);
+        setTimeout(function () {
+            $('#deleteConfirmModal').modal('show');
+        }, 100);
+    };
+
+    self.confirmDelete = function () {
+        var model = self.customerToDelete();
+        if (model) {
+            ajax.delete(baseUrl + "/id?id=" + model.customerId())
+                .done((result) => {
+                    self.customerList.remove(model);
+                    $('#deleteConfirmModal').modal('hide');
+                })
+                .fail((err) => {
+                    console.log(err);
+                    $('#deleteConfirmModal').modal('hide');
+                });
+        }
     };
 
     self.setCreateMode = function () {
