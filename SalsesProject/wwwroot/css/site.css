@@ -21,3 +21,8 @@ body {
   padding-top: 100px;
   margin-bottom: 60px;
 }
+
+.invalid-feedback {
+    display: block;
+    color: #ff0000;
+}

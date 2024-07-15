@@ -14,7 +14,7 @@ var customerController = function () {
     self.IsUpdate = ko.observable(false);
     self.selectedCustomer = ko.observable(new customerModel());
     self.mode = ko.observable(mode.create);
-
+    self.newCustomer().errors = ko.validation.group(self.newCustomer());
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
@@ -23,33 +23,39 @@ var customerController = function () {
     }
     self.getdata();
 
+   
+    ko.validation.init();
     self.AddCustomer = function () {
-        switch (self.mode()) {
-            case mode.create:
-                ajax.post(baseUrl+"/Add", ko.toJSON(self.newCustomer()))
-                    .done(function (result) {
-                        self.customerList.push(new customerModel(result));
-                        self.getdata();
-                        self.CloseModel();
-                    })
-                    .fail(function (err) {
-                        console.log(err);
-                    });
-                break;
-            case mode.update:
-                ajax.put(baseUrl + "/id", ko.toJSON(self.newCustomer()))
-                    .done(function (result) {
-                        self.customerList.replace(self.newCustomer());
-                        self.resetForm();
-                        self.getdata();
-                        self.CloseModel();
-                    })
-                    .fail(function (err) {
-                        console.log(err);
-                    });
-                break;
-            default:
-                console.log("Invalid mode");
+        if (self.newCustomer().isValid()) {
+            switch (self.mode()) {
+                case mode.create:
+                    ajax.post(baseUrl + "/Add", ko.toJSON(self.newCustomer()))
+                        .done(function (result) {
+                            self.customerList.push(new customerModel(result));
+                            self.getdata();
+                            self.CloseModel();
+                        })
+                        .fail(function (err) {
+                            console.log(err);
+                        });
+                    break;
+                case mode.update:
+                    ajax.put(baseUrl + "/id", ko.toJSON(self.newCustomer()))
+                        .done(function (result) {
+                            self.customerList.replace(self.newCustomer());
+                            self.resetForm();
+                            self.getdata();
+                            self.CloseModel();
+                        })
+                        .fail(function (err) {
+                            console.log(err);
+                        });
+                    break;
+                default:
+                    console.log("Invalid mode");
+            }
+        } else {
+            self.newCustomer().errors.showAllMessages();
         }
     };
     self.DeleteCustomer = function (model) {

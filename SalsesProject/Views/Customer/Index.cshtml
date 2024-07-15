@@ -18,7 +18,8 @@
                     <form>
                         <div class="form-group">
                             <label for="fullName">Full Name:</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" data-bind="value:customerName" />
+                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name"
+                                   data-bind="value: customerName" />
                         </div>
                         <div class="form-group">
                             <label for="contactNumber">Contact Number:</label>
@@ -69,6 +70,7 @@
 
 @section Scripts {
     <script src="~/js/knockout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.4/knockout.validation.min.js"></script>
     <script src="~/js/customer/customermodel.js"></script>
     <script src="~/js/customer/customercontroller.js"></script>
     <script>
