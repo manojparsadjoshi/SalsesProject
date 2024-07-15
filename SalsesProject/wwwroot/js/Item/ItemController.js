@@ -12,6 +12,7 @@ var itemController = function () {
     self.SelectedList = ko.observable(new itemModel());
     self.IsUpdate = ko.observable(false);
     self.mode = ko.observable(mode.create);
+    self.NewItem().errors = ko.validation.group(self.NewItem());
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
@@ -20,35 +21,42 @@ var itemController = function () {
     }
     self.getdata();
 
+    ko.validation.init();
+
     self.AddItem = function () {
-        switch (self.mode()) {
-            case mode.create:
-                ajax.post(baseUrl, ko.toJSON(self.NewItem()))
-                    .done(function (result) {
-                        self.ItemList.push(new itemModel(result));
-                        self.resetForm();
-                        self.getdata();
-                        $('#itemModal').modal('hide');
-                    })
-                    .fail(function (err) {
-                        console.log(err);
-                    });
-                break;
-            case mode.update:
-               // debugger;
-                ajax.put(baseUrl+"/" + self.NewItem().itemId(), ko.toJSON(self.NewItem()))
-                    .done(function (result) {
-                        self.ItemList.replace(self.SelectedList(), new itemModel(result));
-                        self.resetForm();
-                        self.getdata();
-                        $('#itemModal').modal('hide');
-                    })
-                    .fail(function (err) {
-                        console.log(err);
-                    });
-                break;
-            default:
-                console.log("Invalid mode");
+        if (self.NewItem().isValid()) {
+            switch (self.mode()) {
+                case mode.create:
+                    ajax.post(baseUrl, ko.toJSON(self.NewItem()))
+                        .done(function (result) {
+                            self.ItemList.push(new itemModel(result));
+                            self.resetForm();
+                            self.getdata();
+                            $('#itemModal').modal('hide');
+                        })
+                        .fail(function (err) {
+                            console.log(err);
+                        });
+                    break;
+                case mode.update:
+                    // debugger;
+                    ajax.put(baseUrl + "/" + self.NewItem().itemId(), ko.toJSON(self.NewItem()))
+                        .done(function (result) {
+                            self.ItemList.replace(self.SelectedList(), new itemModel(result));
+                            self.resetForm();
+                            self.getdata();
+                            $('#itemModal').modal('hide');
+                        })
+                        .fail(function (err) {
+                            console.log(err);
+                        });
+                    break;
+                default:
+                    console.log("Invalid mode");
+            }
+        } else
+        {
+            self.NewItem().errors.showAllMessages();
         }
     };
 
