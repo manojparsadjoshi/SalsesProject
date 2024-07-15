@@ -1,8 +1,15 @@
 ﻿<div class="container mt-4">
     <h1 class="text-center">Customer Details</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModel" data-bind="click: setCreateMode">
-        Add New Customer
-    </button>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModel" data-bind="click: setCreateMode">
+                Add New Customer
+            </button>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Search customers..." data-bind="value: searchTerm, valueUpdate: 'input'">
+        </div>
+    </div>
 
     <div class="modal fade" id="customerModel" tabindex="-1" aria-labelledby="customerModelLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
@@ -66,7 +73,7 @@
             </tr>
         </tbody> 
     </table>
-    
+    @*   pagination model *@
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <li class="page-item" data-bind="css: { disabled: currentPage() === 1 }">

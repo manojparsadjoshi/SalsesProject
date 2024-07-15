@@ -21,6 +21,8 @@ var customerController = function () {
     //pagination
     self.currentPage = ko.observable(1);
     self.pageSize = ko.observable(10);
+    //search bar
+    self.searchTerm = ko.observable('');
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
@@ -75,13 +77,24 @@ var customerController = function () {
     //        });
     //};
 
-
+    self.filteredCustomerList = ko.computed(function () {
+        var filter = self.searchTerm().toLowerCase();
+        if (!filter) {
+            return self.customerList();
+        } else {
+            return ko.utils.arrayFilter(self.customerList(), function (customer) {
+                return customer.customerName().toLowerCase().indexOf(filter) !== -1 ||
+                    customer.contactNumber().toLowerCase().indexOf(filter) !== -1 ||
+                    customer.address().toLowerCase().indexOf(filter) !== -1;
+            });
+        }
+    });
     self.totalPages = ko.computed(function () {
-        return Math.ceil(self.customerList().length / self.pageSize());
+        return Math.ceil(self.filteredCustomerList().length / self.pageSize());
     });
     self.pagedCustomerList = ko.computed(function () {
         var startIndex = (self.currentPage() - 1) * self.pageSize();
-        return self.customerList().slice(startIndex, startIndex + self.pageSize());
+        return self.filteredCustomerList().slice(startIndex, startIndex + self.pageSize());
     });
 
     self.nextPage = function () {
