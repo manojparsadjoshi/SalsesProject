@@ -111,26 +111,26 @@ var masterdetailsController = function () {
 
 
     self.SelectSale = function (model) {
-        // Deep clone the model to avoid reference issues
         var clonedModel = ko.toJS(model);
-
-        // Format the date properly for datetime-local input
         if (clonedModel.salesDate) {
             clonedModel.salesDate = new Date(clonedModel.salesDate).toISOString().slice(0, 16);
         }
-
-        // Update NewSales with the cloned and formatted model
         self.NewSales(new mastermodelVM(clonedModel));
         self.IsUpdated(true);
         $('#salesModal').modal('show');
-    }
+    };
 
 
     self.resetForm = () => {
         self.NewSales(new mastermodelVM());
         self.IsUpdated(false);
+        self.NewSales().sales.push(new detailsmodelVM()); 
     };
 
+    self.openCreateModal = function () {
+        self.resetForm();
+        $('#salesModal').modal('show');
+    };
 
     self.AddItem = function () {
         self.NewSales().sales.push(new detailsmodelVM());
