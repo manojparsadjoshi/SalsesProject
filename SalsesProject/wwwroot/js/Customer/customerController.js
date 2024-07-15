@@ -115,6 +115,9 @@ var customerController = function () {
         }, 100);
     };
 
+    self.currentPageStartIndex = ko.computed(function () {
+        return (self.currentPage() - 1) * self.pageSize();
+    });
     self.confirmDelete = function () {
         var model = self.customerToDelete();
         if (model) {
