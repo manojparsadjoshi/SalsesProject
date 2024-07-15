@@ -1,4 +1,5 @@
 ﻿/// <reference path="../knockout.js" />
+/// <reference path="../jquery.js" />
 /// <reference path="customermodel.js" />
 
 const mode = {
@@ -14,8 +15,12 @@ var customerController = function () {
     self.IsUpdate = ko.observable(false);
     self.selectedCustomer = ko.observable(new customerModel());
     self.mode = ko.observable(mode.create);
+    //validation
     self.newCustomer().errors = ko.validation.group(self.newCustomer());
     self.customerToDelete = ko.observable();
+    //pagination
+    self.currentPage = ko.observable(1);
+    self.pageSize = ko.observable(10);
 
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
@@ -70,6 +75,25 @@ var customerController = function () {
     //        });
     //};
 
+
+    self.totalPages = ko.computed(function () {
+        return Math.ceil(self.customerList().length / self.pageSize());
+    });
+    self.pagedCustomerList = ko.computed(function () {
+        var startIndex = (self.currentPage() - 1) * self.pageSize();
+        return self.customerList().slice(startIndex, startIndex + self.pageSize());
+    });
+
+    self.nextPage = function () {
+        if (self.currentPage() < self.totalPages()) {
+            self.currentPage(self.currentPage() + 1);
+        }
+    };
+    self.previousPage = function () {
+        if (self.currentPage() > 1) {
+            self.currentPage(self.currentPage() - 1);
+        }
+    };
 
     self.DeleteCustomer = function (model) {
         self.customerToDelete(model);
