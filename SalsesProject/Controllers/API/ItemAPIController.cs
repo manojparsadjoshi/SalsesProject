@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sales.Services.Item;
 using SalsesProject.Models;
+using SalsesProject.Models.VM;
 
 namespace SalsesProject.Controllers.API
 {
@@ -9,11 +10,11 @@ namespace SalsesProject.Controllers.API
     [ApiController]
     public class ItemAPIController : ControllerBase
     {
-        
+
         private readonly IItemServices _services;
-        public ItemAPIController( IItemServices services)
+        public ItemAPIController(IItemServices services)
         {
-            
+
             _services = services;
         }
         [HttpGet]
@@ -51,6 +52,19 @@ namespace SalsesProject.Controllers.API
         {
             _services.Delete(id);
             return id;
+        }
+        [HttpGet("GetCategory")]
+        public List<DropdownVM> GetCategory()
+        {
+            List<DropdownVM> result = Enum.GetValues(typeof(Category))
+                                     .Cast<Category>()
+                                     .Select(c => new DropdownVM
+                                     {
+                                         Id = (int)c,
+                                         Name = c.ToString()
+                                     }).ToList();
+
+            return result;
         }
     }
 }

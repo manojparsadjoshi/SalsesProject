@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sales.Entity;
 using SalsesProject.Models;
 
 namespace Sales.Db
@@ -15,6 +16,7 @@ namespace Sales.Db
         public DbSet<SalesDetailsModel> DetailsModels { get; set; }
         public DbSet<UserModel> Users { get; set; }
         public DbSet<LogInModel> LogInModel { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
 
     }
 }

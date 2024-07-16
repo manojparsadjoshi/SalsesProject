@@ -47,7 +47,7 @@ namespace SalsesProject.Controllers
             return View(model);
         }
 
-        [Authorize]
+       // [Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

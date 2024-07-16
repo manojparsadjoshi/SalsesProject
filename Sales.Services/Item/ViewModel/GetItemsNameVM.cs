@@ -5,4 +5,9 @@
         public int ItemId {  get; set; }
         public string ItemName { get; set; }
     }
+    public class DropdownVM
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

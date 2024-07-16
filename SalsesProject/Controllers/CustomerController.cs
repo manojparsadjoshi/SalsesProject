@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SalsesProject.Controllers
 {
-    [Authorize(Roles ="admin")]
+    [Authorize(Roles ="user")]
     public class CustomerController : Controller
     {
         public IActionResult Index()

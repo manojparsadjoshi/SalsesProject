@@ -1,7 +1,6 @@
-﻿
-<div class="container mt-4">
+﻿<div class="container mt-4">
     <h1 class="text-center">Item Details</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal" data-bind="click: setCreateMode">
+    <button type="button" class="btn btn-primary" data-bind="click: setCreateMode">
         Add New Items
     </button>
 
@@ -13,61 +12,61 @@
                         <span data-bind="ifnot: IsUpdate">Add New Item</span>
                         <span data-bind="if: IsUpdate">Update Item</span>
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: CloseModel"></button>
+                    <button type="button" class="btn-close" data-bind="click: CloseModel"></button>
                 </div>
-                <div class="modal-body" data-bind="with:NewItem">
-                    <form>
+                <div class="modal-body">
+                    <form data-bind="with: NewItem">
                         <div class="form-group">
-                            <label for="fullName">Item Name:</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter item  name" data-bind="value:itemName" />
+                            <label for="itemName">Item Name:</label>
+                            <input type="text" class="form-control" id="itemName" placeholder="Enter item name" data-bind="value: itemName, valueUpdate: 'afterkeydown'" />
                         </div>
                         <div class="form-group">
-                            <label for="contactNumber">Unit :</label>
-                            <input type="text" class="form-control" id="contactNumber" placeholder="Enter item unit " data-bind="value:unit" />
+                            <label for="unit">Unit:</label>
+                            <input type="text" class="form-control" id="unit" placeholder="Enter item unit" data-bind="value: unit, valueUpdate: 'afterkeydown'" />
                         </div>
                         <div class="form-group">
-                            <label for="address">Category:</label>
-                            <input type="text" class="form-control" id="address" placeholder="Enter item category" data-bind="value:category" />
+                            <label for="category">Category:</label>
+                            <select class="form-control" id="category" data-bind="options: $parent.CategoryNameList,
+                                       optionsText: 'name',
+                                       optionsValue: 'id',
+                                       value: category,
+                                       optionsCaption: 'Choose category'">
+                            </select>
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-bind="click:$root.AddItem">
-                        <span data-bind="ifnot: IsUpdate">Create</span>
-                        <span data-bind="if: IsUpdate">Update</span>
-                    </button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" data-bind="click: AddItem, text: IsUpdate() ? 'Update' : 'Create'"></button>
+                    <button class="btn btn-secondary" data-bind="click: CloseModel">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
     <table class="table table-striped mt-4">
         <thead>
             <tr>
                 <th>S.N</th>
                 <th>Name</th>
-                <th>Unit </th>
+                <th>Unit</th>
                 <th>Category</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody data-bind="foreach:ItemList">
+        <tbody data-bind="foreach: ItemList">
             <tr>
                 <td data-bind="text: $index() + 1"></td>
-                <td data-bind="text:itemName"></td>
-                <td data-bind="text:unit"></td>
-                <td data-bind="text:category"></td>
+                <td data-bind="text: itemName"></td>
+                <td data-bind="text: unit"></td>
+                <td data-bind="text: categoryName"></td>
                 <td>
-                    <button data-bind="click: $root.selectItem" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#itemModal">Edit</button>
-                    <button data-bind="click: $root.Deleteitem" class="btn btn-sm btn-danger">Delete</button>
+                    <button data-bind="click: $parent.selectItem" class="btn btn-sm btn-dark">Edit</button>
+                    <button data-bind="click: $parent.Deleteitem" class="btn btn-sm btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
-
-
 
 @section Scripts {
     <script src="~/js/knockout.js"></script>
@@ -75,9 +74,9 @@
     <script src="~/js/item/itemmodel.js"></script>
     <script src="~/js/item/itemcontroller.js"></script>
     <script>
-        {
-            var obj = new itemController();
-            ko.applyBindings(obj);
-        }
+        $(document).ready(function () {
+            var viewModel = new itemController();
+            ko.applyBindings(viewModel);
+        });
     </script>
 }

@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Sales.Entity
 {
-    internal class CategoryModel
+    public class CategoryModel
     {
         [Key]
         public int Id { get; set; }
-        public string Vegetable { get; set; }
-        public string Fruit { get; set; }
-        public string Meat { get; set; }
+        public string Name { get; set; }
+        
     }
 }
