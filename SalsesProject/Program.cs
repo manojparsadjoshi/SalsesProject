@@ -27,23 +27,23 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         config.AccessDeniedPath = "/Home/AccessDenied";
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    //options.AddPolicy("admin",
-    //   policy => policy.RequireRole("admin"));
+//builder.Services.AddAuthorization(options =>
+//{
+//    //options.AddPolicy("admin",
+//    //   policy => policy.RequireRole("admin"));
 
-    //options.FallbackPolicy = new AuthorizationPolicyBuilder()
-    //.RequireAuthenticatedUser()
-    //.Build();
+//    //options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//    //.RequireAuthenticatedUser()
+//    //.Build();
 
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
-    options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
+//    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+//    options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
 
-    // Add this line to require authentication by default
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//    // Add this line to require authentication by default
+//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 var app = builder.Build();
 
