@@ -6,6 +6,7 @@ using Sales.Services.Customer;
 using Sales.Services.Item;
 using Sales.Services.MasterDetail;
 using Sales.Services.User;
+using Sales.Services.Vender;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<ICustomerServices, CustomerService>();
 builder.Services.AddTransient<IItemServices,ItemServices>();
 builder.Services.AddScoped<ISalesDetailsServices, SalesDetailsServices>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IVenderServices, VenderServices>();
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

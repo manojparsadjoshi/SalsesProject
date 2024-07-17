@@ -17,6 +17,7 @@ namespace Sales.Db
         public DbSet<UserModel> Users { get; set; }
         public DbSet<LogInModel> LogInModel { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<VenderModel> venders { get; set; }
 
     }
 }
