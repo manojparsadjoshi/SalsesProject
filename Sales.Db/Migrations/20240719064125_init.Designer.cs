@@ -12,8 +12,8 @@ using Sales.Db;
 namespace Sales.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240717090820_vender")]
-    partial class vender
+    [Migration("20240719064125_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,8 +44,11 @@ namespace Sales.Db.Migrations
 
             modelBuilder.Entity("Sales.Entity.VenderModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()

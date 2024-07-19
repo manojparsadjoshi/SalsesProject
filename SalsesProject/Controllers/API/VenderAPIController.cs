@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sales.Db.Migrations;
 using Sales.Entity;
 using Sales.Services.Vender;
 
@@ -30,6 +29,28 @@ namespace SalsesProject.Controllers.API
             }
             var data = _venderServices.Create(vender);
             return true;
+        }
+
+        [HttpGet("id")]
+        public ActionResult<VenderModel> GetById(int id)
+        {
+            var existingData = _venderServices.GetById(id);
+            if (existingData == null)
+            {
+                return NotFound();
+            }
+            return Ok(existingData);
+        }
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var existingData = _venderServices.GetById(id);
+            if(existingData == null)
+            {
+                return NotFound();
+            }
+            _venderServices.Delete(id);
+            return Ok(id);
         }
     }
 }

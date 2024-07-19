@@ -11,7 +11,7 @@ namespace Sales.Entity
     public class VenderModel
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public  string Contract {  get; set; }
         public string Address { get; set; }
