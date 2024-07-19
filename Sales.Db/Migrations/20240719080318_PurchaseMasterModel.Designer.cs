@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sales.Db;
 
@@ -11,9 +12,11 @@ using Sales.Db;
 namespace Sales.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240719080318_PurchaseMasterModel")]
+    partial class PurchaseMasterModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,58 +42,7 @@ namespace Sales.Db.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Sales.Entity.ItemCurrentInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quentity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("itemCurrentInfos");
-                });
-
-            modelBuilder.Entity("Sales.Entity.ItemCurrentInfoHistoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quentity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StockInOut")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TransDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("InfoHistoryModels");
-                });
-
-            modelBuilder.Entity("Sales.Entity.PurchaseDetailModel", b =>
+            modelBuilder.Entity("Sales.Entity.PurchaseMasterModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,36 +53,6 @@ namespace Sales.Db.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PurchaseMasterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quentity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("PurchaseMasterId");
-
-                    b.ToTable("purchaseMasterDetailModels");
-                });
-
-            modelBuilder.Entity("Sales.Entity.PurchaseMasterModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<decimal>("BillAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -139,9 +61,6 @@ namespace Sales.Db.Migrations
 
                     b.Property<int>("InvoiceNumber")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("NetAmount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("VenderId")
                         .HasColumnType("int");
@@ -339,47 +258,6 @@ namespace Sales.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Sales.Entity.ItemCurrentInfo", b =>
-                {
-                    b.HasOne("SalsesProject.Models.ItemsModel", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Sales.Entity.ItemCurrentInfoHistoryModel", b =>
-                {
-                    b.HasOne("SalsesProject.Models.ItemsModel", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Sales.Entity.PurchaseDetailModel", b =>
-                {
-                    b.HasOne("SalsesProject.Models.ItemsModel", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Sales.Entity.PurchaseMasterModel", "PurchaseMaster")
-                        .WithMany()
-                        .HasForeignKey("PurchaseMasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("PurchaseMaster");
                 });
 
             modelBuilder.Entity("Sales.Entity.PurchaseMasterModel", b =>

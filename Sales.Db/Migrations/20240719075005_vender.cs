@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sales.Db.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class vender : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -18,6 +18,11 @@ namespace Sales.Db
         public DbSet<LogInModel> LogInModel { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<VenderModel> venders { get; set; }
+        public DbSet<PurchaseMasterModel> purchaseMasterModels { get; set; }
+        public DbSet<PurchaseDetailModel> purchaseMasterDetailModels { get; set; }
+        public DbSet<ItemCurrentInfo> itemCurrentInfos { get; set; }
+        public DbSet<ItemCurrentInfoHistoryModel> InfoHistoryModels { get; set; }
+
 
     }
 }

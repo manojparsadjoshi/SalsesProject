@@ -12,8 +12,8 @@ using Sales.Db;
 namespace Sales.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719064125_init")]
-    partial class init
+    [Migration("20240719075005_vender")]
+    partial class vender
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

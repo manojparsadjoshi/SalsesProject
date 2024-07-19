@@ -5,6 +5,7 @@ using Sales.Db;
 using Sales.Services.Customer;
 using Sales.Services.Item;
 using Sales.Services.MasterDetail;
+using Sales.Services.PurchaseMasterDetail;
 using Sales.Services.User;
 using Sales.Services.Vender;
 
@@ -19,7 +20,7 @@ builder.Services.AddTransient<IItemServices,ItemServices>();
 builder.Services.AddScoped<ISalesDetailsServices, SalesDetailsServices>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IVenderServices, VenderServices>();
-
+builder.Services.AddTransient<IPurchaseMasterSercices,PurchaseMasterServices>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(config =>

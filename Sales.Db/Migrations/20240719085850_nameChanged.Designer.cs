@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sales.Db;
 
@@ -11,9 +12,11 @@ using Sales.Db;
 namespace Sales.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240719085850_nameChanged")]
+    partial class nameChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +93,7 @@ namespace Sales.Db.Migrations
                     b.ToTable("InfoHistoryModels");
                 });
 
-            modelBuilder.Entity("Sales.Entity.PurchaseDetailModel", b =>
+            modelBuilder.Entity("Sales.Entity.PurchaseMasterDetailModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,14 +101,11 @@ namespace Sales.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PurchaseMasterId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quentity")
                         .HasColumnType("int");
@@ -118,8 +118,6 @@ namespace Sales.Db.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("PurchaseMasterId");
-
                     b.ToTable("purchaseMasterDetailModels");
                 });
 
@@ -131,6 +129,9 @@ namespace Sales.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("BillAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -139,9 +140,6 @@ namespace Sales.Db.Migrations
 
                     b.Property<int>("InvoiceNumber")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("NetAmount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("VenderId")
                         .HasColumnType("int");
@@ -363,7 +361,7 @@ namespace Sales.Db.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("Sales.Entity.PurchaseDetailModel", b =>
+            modelBuilder.Entity("Sales.Entity.PurchaseMasterDetailModel", b =>
                 {
                     b.HasOne("SalsesProject.Models.ItemsModel", "Item")
                         .WithMany()
@@ -371,15 +369,7 @@ namespace Sales.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sales.Entity.PurchaseMasterModel", "PurchaseMaster")
-                        .WithMany()
-                        .HasForeignKey("PurchaseMasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Item");
-
-                    b.Navigation("PurchaseMaster");
                 });
 
             modelBuilder.Entity("Sales.Entity.PurchaseMasterModel", b =>
