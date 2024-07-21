@@ -52,5 +52,10 @@ namespace SalsesProject.Controllers.API
             _venderServices.Delete(id);
             return Ok(id);
         }
+        [HttpPut]
+        public bool Update(VenderModel vender)
+        {
+            return _venderServices.Update(vender);
+        }
     }
 }

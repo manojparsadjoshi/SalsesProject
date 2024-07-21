@@ -14,11 +14,31 @@ namespace SalsesProject.Controllers.API
         {
             _purchaseMasterSercices = purchaseMasterSercices;
         }
-
+        [HttpGet]
+        public List<PurchaseMasterVM>GetAll()
+        {
+            return _purchaseMasterSercices.GetAll();
+        }
+        [HttpGet("Id")]
+        public PurchaseMasterVM GetById(int id)
+        {
+            return _purchaseMasterSercices.GetById(id);
+        }
         [HttpPost]
         public bool Add(PurchaseMasterVM model)
         {
             return _purchaseMasterSercices.Add(model);
+        }
+        [HttpDelete]
+        public int Delete(int id)
+        {
+            return _purchaseMasterSercices.Delete(id);
+        }
+
+        [HttpPut]
+        public bool Update(PurchaseMasterVM model)
+        {
+            return _purchaseMasterSercices.Update(model);
         }
     }
 }
