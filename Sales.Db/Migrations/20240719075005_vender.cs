@@ -195,5 +195,10 @@ namespace Sales.Db.Migrations
             migrationBuilder.DropTable(
                 name: "Customers");
         }
+
+        public static explicit operator int(vender v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

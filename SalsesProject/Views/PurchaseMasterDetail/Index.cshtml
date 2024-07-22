@@ -1,0 +1,142 @@
+﻿<div class="container mt-4">
+    <h2>Purchase Management System</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal" data-bind="click: setCreateMode">
+        Create New Purchase
+    </button>
+
+
+    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="purchaseModalLabel">
+                        <span data-bind="ifnot: IsUpdated">Create New Purchase</span>
+                        <span data-bind="if: IsUpdated">Update Purchase</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row" data-bind="with: NewPurhaseOrder">
+                            <div class="col-md-4 form-group">
+                                <label>Vendor Name:</label>
+                                                <select data-bind="options: $root.VendorsNameList,
+                                   optionsText: 'venderName',
+                                   optionsValue: 'venderId',
+                                   optionsCaption: 'Choose Vendor',
+                                   value: vendorId">
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Invoice Number:</label>
+                                <input type="text" class="form-control" data-bind="value: invoiceNumber">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Bill Amount:</label>
+                                <input type="text" class="form-control" data-bind="value: billAmount, enable: false" />
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Discount:</label>
+                                <input type="text" class="form-control" data-bind="value: discount">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Net Amount:</label>
+                                <input type="text" class="form-control" data-bind="value: netAmount, enable: false" />
+                            </div>
+                        </div>
+                        <h4>Purchase Items</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Unit</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:NewPurhaseOrder().purchaseDetails">
+                                <tr>
+                                    <td>
+                                        <select class="form-control" name="itemname"
+                                                data-bind="options: $root.ItemsNameList,
+                                                           optionsText: 'itemName',
+                                                           optionsValue: 'itemId',
+                                                           value: itemId,
+                                                           optionsCaption: 'Choose Item',
+                                                           event : {change : $root.updateUnit}">
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="form-control" data-bind="value:unit, enable: false" /></td>
+
+                                    <td><input type="number" class="form-control" data-bind="value: quentity, valueUpdate: 'input', event: {change: $root.NewPurhaseOrder().updateBillAmount}" min="0" /></td>
+                                    <td><input type="number" class="form-control" data-bind="value: price, valueUpdate: 'input', event: {change: $root.NewPurhaseOrder().updateBillAmount}" min="0" /></td>
+                                    <td><input type="number" step="0.01" class="form-control" data-bind="value: amount, enable: false" /></td>
+
+                                    @* <td><input type="number" class="form-control" data-bind="value: quantity" min="0" /></td>
+                                    <td><input type="number" class="form-control" data-bind="value: price" min="0" /></td>
+                                    <td><input type="number" step="0.01" class="form-control" data-bind="value: amount, enable: false" /></td> *@
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" data-bind="click: $root.removeItem">
+                                            <i class="fa-solid fa-trash-can"></i>Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-success mb-3" data-bind="click: $root.AddItem"><i class="fa-solid fa-plus"></i>Add Item</button>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bind="click: $root.AddPurchase">
+                        <span data-bind="ifnot: IsUpdated">Create</span>
+                        <span data-bind="if: IsUpdated">Update</span>
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>S.N.</th>
+                <th>Vendor Name</th>
+                <th>Invoice Number</th>
+                <th>Bill Amount</th>
+                <th>Discount Amount</th>
+                <th>Net Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: PurchaseMasterDetailList">
+            <tr>
+                <td data-bind="text: $index() + 1"></td>
+                <td data-bind="text: vendorName"></td>
+                <td data-bind="text: invoiceNumber"></td>
+                <td data-bind="text: billAmount"></td>
+                <td data-bind="text: discount"></td>
+                <td data-bind="text: netAmount"></td>
+                <td>
+                    <button data-bind="click: $root.SelectVendor" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#purchaseModal">Edit</button>
+                    <button class="btn btn-sm btn-danger" data-bind="click:$root.DeletePurchase">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@section Scripts
+{
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/purchasemasterdetail/purchasemodel.js"></script>
+    <script src="~/js/purchasemasterdetail/purchasecontroller.js"></script>
+    <script>
+        $(document).ready(function () {
+            var obj = new purchasemasterdetailcontroller();
+            ko.applyBindings(obj);
+        });
+    </script>
+}

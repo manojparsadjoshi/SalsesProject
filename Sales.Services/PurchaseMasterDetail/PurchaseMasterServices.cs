@@ -216,14 +216,23 @@ namespace Sales.Services.PurchaseMasterDetail
 
         public IEnumerable<GetItemsNameVM> GetItemsNames()
         {
-            throw new NotImplementedException();
+            var data = _context.Items.Select(Item => new GetItemsNameVM
+            {
+                ItemId = Item.ItemId,
+                ItemName = Item.ItemName
+            });
+            return data;
         }
 
         public IEnumerable<GetVendersName> GetVendersNames()
         {
-            throw new NotImplementedException();
-        }
-
+            var data = _context.venders.Select(vender => new GetVendersName
+            {
+                VenderId = vender.Id,
+                VenderName = vender.Name,
+            });
+            return data;
+        }        
         public bool Update(PurchaseMasterVM model)
         {
             var existingMasterData = _context.purchaseMasterModels.Find(model.Id);
@@ -303,6 +312,7 @@ namespace Sales.Services.PurchaseMasterDetail
 
 
             return true;
-        }
+        }      
     }
+    
 }

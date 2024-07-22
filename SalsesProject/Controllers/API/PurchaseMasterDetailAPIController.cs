@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Sales.Services.PurchaseMasterDetail;
 using Sales.Services.PurchaseMasterDetail.ViewModel;
+using Sales.Services.Vender.ViewModel;
+using SalsesProject.Models.VM;
 
 namespace SalsesProject.Controllers.API
 {
@@ -39,6 +41,18 @@ namespace SalsesProject.Controllers.API
         public bool Update(PurchaseMasterVM model)
         {
             return _purchaseMasterSercices.Update(model);
+        }
+
+        [HttpGet("ItemName")]
+        //[product]
+        public IEnumerable<GetItemsNameVM> GetItemsNames()
+        {
+            return _purchaseMasterSercices.GetItemsNames();
+        }
+        [HttpGet("VenderName")]
+        public IEnumerable<GetVendersName> GetVendersNames()
+        {
+           return _purchaseMasterSercices.GetVendersNames();
         }
     }
 }
