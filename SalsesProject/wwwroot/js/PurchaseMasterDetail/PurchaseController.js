@@ -27,7 +27,7 @@ var purchasemasterdetailcontroller = function () {
         var purchaseData = ko.toJS(self.NewPurchaseOrder());
         
         if (self.IsUpdated()) {
-            debugger;
+           
             ajax.put(baseUrl, JSON.stringify(purchaseData))
                 // .done(function (result) {
                 //ajax.put(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
@@ -48,10 +48,10 @@ var purchasemasterdetailcontroller = function () {
                 });
         }
         else {
-            debugger;
             ajax.post(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
             
                 .done(function (result) {
+                    debugger;
                     self.PurchaseMasterDetailList.push(new masterpurchaseVM(result));
                     self.resetForm();
                     self.getData();

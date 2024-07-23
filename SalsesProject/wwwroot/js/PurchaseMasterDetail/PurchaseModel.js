@@ -36,13 +36,13 @@ var detailpurchaseVM = function (item) {
     self.itemId = ko.observable(item.itemId || 0);
     self.itemName = ko.observable(item.itemName || '');
     self.unit = ko.observable(item.unit || '');
-    self.quantity = ko.observable(item.quantity || 0);
+    self.quentity = ko.observable(item.quentity || 0);
     self.price = ko.observable(item.price || 0);
     self.amount = ko.computed(function () {
-        return (parseFloat(self.quantity()) || 0) * (parseFloat(self.price()) || 0);
+        return (parseFloat(self.quentity()) || 0) * (parseFloat(self.price()) || 0);
     });
 
-    self.quantity.subscribe(function () {
+    self.quentity.subscribe(function () {
         self.amount.notifySubscribers();
     });
     self.price.subscribe(function () {

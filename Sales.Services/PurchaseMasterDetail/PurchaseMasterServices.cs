@@ -80,8 +80,7 @@ namespace Sales.Services.PurchaseMasterDetail
                         {
                             Id = 0,
                             ItemId = itemdetail.ItemId,
-                            Quentity
-                            = itemdetail.Quentity,
+                            Quentity = itemdetail.Quentity,
                             TransDate = DateTime.Now,
                             StockInOut = StockInOut.In,
                             TransactionType = TransactionType.sales
@@ -133,6 +132,8 @@ namespace Sales.Services.PurchaseMasterDetail
                 }
                 _context.purchaseMasterDetailModels.RemoveRange(existingdetailsdata);
                 _context.SaveChanges();
+
+
                 _context.purchaseMasterModels.Remove(existingMasterData);
                 _context.SaveChanges();
                 return id;
@@ -296,22 +297,45 @@ namespace Sales.Services.PurchaseMasterDetail
                     itemcurrentinfo.Quentity += item.Quentity;
                     _context.itemCurrentInfos.Update(itemcurrentinfo);
                     _context.SaveChanges();
+
+
+                    var historyinfo = new ItemCurrentInfoHistoryModel
+                    {
+                        Id = 0,
+                        ItemId = item.ItemId,
+                        Quentity = item.Quentity,
+                        TransDate = DateTime.Now,
+                        StockInOut = StockInOut.In,
+                        TransactionType = TransactionType.purchase
+                    };
+                    _context.InfoHistoryModels.Add(historyinfo);
+                    _context.SaveChanges();
                 }
-
-                var historyinfo = new ItemCurrentInfoHistoryModel
+                else
                 {
-                    Id = 0,
-                    ItemId = item.ItemId,
-                    Quentity = item.Quentity,
-                    TransDate = DateTime.Now,
-                    StockInOut = StockInOut.In,
-                    TransactionType = TransactionType.purchase
-                };
-                _context.InfoHistoryModels.Add(historyinfo);
-                _context.SaveChanges();
+                    var newitemInfo = new ItemCurrentInfo
+                    {
+                        Id = 0,
+                        ItemId = item.ItemId,
+                        Quentity = item.Quentity,
+                    };
+                    _context.itemCurrentInfos.Add(newitemInfo);
+                    _context.Add(newitemInfo);
+                    _context.SaveChanges();
+
+                    var historyinfo = new ItemCurrentInfoHistoryModel
+                    {
+                        Id = 0,
+                        ItemId = item.ItemId,
+                        Quentity = item.Quentity,
+                        TransDate = DateTime.Now,
+                        StockInOut = StockInOut.In,
+                        TransactionType = TransactionType.purchase
+                    };
+                    _context.InfoHistoryModels.Add(historyinfo);
+                    _context.SaveChanges();
+                }
             };
-
-
             return true;
         }      
     }

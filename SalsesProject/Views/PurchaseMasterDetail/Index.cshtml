@@ -49,7 +49,7 @@
                                 <tr>
                                     <th>Item Name</th>
                                     <th>Unit</th>
-                                    <th>Quantity</th>
+                                    <th>Quentity</th>
                                     <th>Price</th>
                                     <th>Amount</th>
                                     <th>Action</th>
@@ -68,7 +68,7 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control" data-bind="value: unit, enable: false" /></td>
-                                    <td><input type="number" class="form-control" data-bind="value: quantity, valueUpdate: 'input', event: {change: $root.NewPurchaseOrder().updateBillAmount}" min="0" /></td>
+                                    <td><input type="number" class="form-control" data-bind="value: quentity, valueUpdate: 'input', event: {change: $root.NewPurchaseOrder().updateBillAmount}" min="0" /></td>
                                     <td><input type="number" class="form-control" data-bind="value: price, valueUpdate: 'input', event: {change: $root.NewPurchaseOrder().updateBillAmount}" min="0" /></td>
                                     <td><input type="number" step="0.01" class="form-control" data-bind="value: amount, enable: false" /></td>
                                     <td>
