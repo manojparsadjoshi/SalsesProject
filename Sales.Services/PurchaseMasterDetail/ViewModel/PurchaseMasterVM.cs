@@ -9,7 +9,7 @@ namespace Sales.Services.PurchaseMasterDetail.ViewModel
     public class PurchaseMasterVM
     {
         public int Id { get; set; }
-        public int VendorId { get; set; }
+        public int VenderId { get; set; }
         public string ? VendorName { get; set; }
         public int InvoiceNumber { get; set; }
         public decimal BillAmount { get; set; }

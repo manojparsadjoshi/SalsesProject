@@ -61,7 +61,8 @@ namespace SalsesProject.Controllers.API
                                      .Select(c => new DropdownVM
                                      {
                                          Id = (int)c,
-                                         Name = c.ToString()
+                                         Name = c.ToString(),
+                                         Unit = c.ToString()
                                      }).ToList();
 
             return result;

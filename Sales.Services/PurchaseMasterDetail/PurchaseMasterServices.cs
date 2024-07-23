@@ -32,7 +32,7 @@ namespace Sales.Services.PurchaseMasterDetail
                 var masterpurchase = new PurchaseMasterModel()
                 {
                     Id = 0,
-                    VenderId = model.VendorId,
+                    VenderId = model.VenderId,
                     InvoiceNumber = model.InvoiceNumber,
                     BillAmount = model.BillAmount,
                     Discount = model.Discount,
@@ -153,7 +153,7 @@ namespace Sales.Services.PurchaseMasterDetail
                     var masterdatas = new PurchaseMasterVM
                     {
                         Id = masterdata.Id,
-                        VendorId = masterdata.VenderId,
+                        VenderId = masterdata.VenderId,
                         VendorName = vendorsdata.Name,
                         InvoiceNumber = masterdata.InvoiceNumber,
                         BillAmount = masterdata.BillAmount,
@@ -192,7 +192,7 @@ namespace Sales.Services.PurchaseMasterDetail
                 var masterdatas = new PurchaseMasterVM
                 {
                     Id = masterdata.Id,
-                    VendorId = masterdata.VenderId,
+                    VenderId = masterdata.VenderId,
                     VendorName = vendordatas.Name,
                     InvoiceNumber = masterdata.InvoiceNumber,
                     BillAmount = masterdata.BillAmount,
@@ -219,7 +219,8 @@ namespace Sales.Services.PurchaseMasterDetail
             var data = _context.Items.Select(Item => new GetItemsNameVM
             {
                 ItemId = Item.ItemId,
-                ItemName = Item.ItemName
+                ItemName = Item.ItemName,
+                Unit = Item.Unit
             });
             return data;
         }
@@ -241,7 +242,7 @@ namespace Sales.Services.PurchaseMasterDetail
                 return false;
             }
             existingMasterData.Id = model.Id;
-            existingMasterData.VenderId = model.VendorId;
+            existingMasterData.VenderId = model.VenderId;
             existingMasterData.InvoiceNumber = model.InvoiceNumber;
             existingMasterData.BillAmount = model.BillAmount;
             existingMasterData.Discount = model.Discount;
