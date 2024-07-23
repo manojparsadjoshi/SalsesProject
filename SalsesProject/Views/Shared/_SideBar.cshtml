@@ -43,6 +43,19 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Vender" asp-action="Index">
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                <span class="menu-title">Vender</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="PurchaseMasterDetail" asp-action="Index">
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                <span class="menu-title">Purchase</span>
+            </a>
+        </li>
+
         <li>
             <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm">
                 <button type="submit" class="btn btn-link nav-link">Sign Out</button>

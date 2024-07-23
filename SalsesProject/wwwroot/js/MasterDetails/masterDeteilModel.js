@@ -41,6 +41,16 @@ var detailsmodelVM = function (item) {
     self.amount = ko.computed(function () {
         return self.quantity() * self.price();
     });
+
+    // Add this subscription to update the unit when itemId changes
+    self.itemId.subscribe(function (newItemId) {
+        var selectedItem = masterdetailsController.ItemsNameList().find(function (item) {
+            return item.itemId() == newItemId;
+        });
+        if (selectedItem) {
+            self.unit(selectedItem.unit());
+        }
+    });
 }
 
 var customernamemodel = function (item) {
@@ -55,4 +65,5 @@ var itemnamemodel = function (item) {
     item = item || {};
     self.itemId = ko.observable(item.itemId || 0);
     self.itemName = ko.observable(item.itemName || '');
-}
+    self.unit = ko.observable(item.unit || 0);
+} 

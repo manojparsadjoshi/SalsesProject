@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sales.Db;
+using Sales.Entity;
 using SalsesProject.Models;
 using SalsesProject.Models.VM;
 
@@ -43,6 +44,31 @@ namespace Sales.Services.MasterDetail
                              };
                 _context.DetailsModels.AddRange(detail);
                 _context.SaveChanges();
+
+                foreach (var item in model.Sales)
+                {
+
+
+                    var currentItemInfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
+                    if (currentItemInfo != null)
+                    {
+                        currentItemInfo.Quentity -= item.Quantity;
+                        _context.itemCurrentInfos.Update(currentItemInfo);
+                        _context.SaveChanges();
+                    }
+
+                    var historyInfo = new ItemCurrentInfoHistoryModel
+                    {
+                        Id = 0,
+                        ItemId = item.ItemId,
+                        Quentity = item.Quantity,
+                        TransDate = DateTime.Now,
+                        StockInOut = StockInOut.Out,
+                        TransactionType = TransactionType.sales
+                    };
+                    _context.InfoHistoryModels.Add(historyInfo);
+                    _context.SaveChanges();
+                }
                 return true;
             }
             return false;
@@ -60,6 +86,29 @@ namespace Sales.Services.MasterDetail
                 var existingDetailData = _context.DetailsModels.Where(x => x.SalesMasterId == existingMasterData.Id).ToList();
                 if (existingDetailData.Count > 0)
                 {
+                    foreach (var item in existingDetailData)
+                    {
+
+                        var CurrentItemsInfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
+                        if (CurrentItemsInfo != null)
+                        {
+                            CurrentItemsInfo.Quentity -= item.Quantity;
+                            _context.itemCurrentInfos.Update(CurrentItemsInfo);
+                            _context.SaveChanges();
+                        }
+                        var historyInfoData = new ItemCurrentInfoHistoryModel
+                        {
+                            Id = 0,
+                            ItemId = item.ItemId,
+                            Quentity = item.Quantity,
+                            TransDate = DateTime.Now,
+                            StockInOut = StockInOut.Out,
+                            TransactionType = TransactionType.sales
+                        };
+                        _context.InfoHistoryModels.Add(historyInfoData);
+                        _context.SaveChanges();
+
+                    }
                     _context.DetailsModels.RemoveRange(existingDetailData);
                     _context.SaveChanges();
                 };
@@ -162,6 +211,29 @@ namespace Sales.Services.MasterDetail
 
 
                 var existingdetailsdata = _context.DetailsModels.Where(x => x.SalesMasterId == existingmasterdata.Id);
+                foreach (var item in existingdetailsdata)
+                {
+                    var itemcurrentinfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
+                    if (itemcurrentinfo != null)
+                    {
+                        itemcurrentinfo.Quentity += item.Quantity;
+                        _context.itemCurrentInfos.Update(itemcurrentinfo);
+                        _context.SaveChanges();
+                    }
+
+                    var historyinfo = new ItemCurrentInfoHistoryModel
+                    {
+                        Id = 0,
+                        ItemId = item.ItemId,
+                        Quentity = item.Quantity,
+                        TransDate = DateTime.Now,
+                        StockInOut = StockInOut.In,
+                        TransactionType = TransactionType.sales
+                    };
+                    _context.InfoHistoryModels.Add(historyinfo);
+                    _context.SaveChanges();
+                };
+
                 _context.DetailsModels.RemoveRange(existingdetailsdata);
                 var details = from c in obj.Sales
                               select new SalesDetailsModel
@@ -176,6 +248,57 @@ namespace Sales.Services.MasterDetail
                               };
                 _context.DetailsModels.AddRange(details);
                 _context.SaveChanges();
+                foreach (var item in obj.Sales)
+                {
+
+
+
+                    var currentItemInfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
+                    if (currentItemInfo != null)
+                    {
+
+                        currentItemInfo.Quentity -= item.Quantity;
+                        _context.itemCurrentInfos.Update(currentItemInfo);
+                        _context.SaveChanges();
+
+
+                        var historyInfoData = new ItemCurrentInfoHistoryModel
+                        {
+                            Id = 0,
+                            ItemId = item.ItemId,
+                            Quentity = item.Quantity,
+                            TransDate = DateTime.Now,
+                            StockInOut = StockInOut.In,
+                            TransactionType = TransactionType.sales
+                        };
+                        _context.InfoHistoryModels.Add(historyInfoData);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        var newitemsInfo = new ItemCurrentInfo
+                        {
+                            Id = 0,
+                            ItemId = item.ItemId,
+                            Quentity = item.Quantity
+                        };
+                        _context.itemCurrentInfos.Add(newitemsInfo);
+                        _context.Add(newitemsInfo);
+                        _context.SaveChanges();
+
+                        var historyInfoData = new ItemCurrentInfoHistoryModel
+                        {
+                            Id = 0,
+                            ItemId = item.ItemId,
+                            Quentity = item.Quantity,
+                            TransDate = DateTime.Now,
+                            StockInOut = StockInOut.In,
+                            TransactionType = TransactionType.sales
+                        };
+                        _context.InfoHistoryModels.Add(historyInfoData);
+                        _context.SaveChanges();
+                    }
+                }
                 return true;
             };
         }
@@ -194,6 +317,7 @@ namespace Sales.Services.MasterDetail
             {
                 ItemId = item.ItemId,
                 ItemName = item.ItemName,
+                Unit = item.Unit              
             }).ToList();
             return items;
         }

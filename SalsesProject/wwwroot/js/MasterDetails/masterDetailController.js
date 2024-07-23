@@ -22,6 +22,7 @@ var masterdetailsController = function () {
         });
     }
     self.getData();
+    masterdetailsController.ItemsNameList = self.ItemsNameList;
 
     // Get CustomerNames
 
@@ -46,15 +47,16 @@ var masterdetailsController = function () {
     //Get ItemNames
     self.getItemsName = function () {
         var url = baseUrl + "/GetItemsName";
-        console.log("Fetching products from URL: " + url);
-
         return ajax.get(url).then(function (data) {
-            // console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
-                return new itemnamemodel(item);
+                return new itemnamemodel({
+                    itemId: item.itemId,
+                    itemName: item.itemName,
+                    unit: item.unit
+                });
             });
             self.ItemsNameList(mappedProducts);
-            console.log("Items Data: ", self.ItemsNameList());
+            console.log("Items loaded:", self.ItemsNameList()); // Add this line for debugging
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching itemsname: ", textStatus, errorThrown);
         });
