@@ -1,0 +1,32 @@
+﻿
+<div class="container mt-4">
+<h2 style="text-align: center;">Current Item Information</h2>
+<table class="table-bordered mt-4" style="width: 60%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid black; padding: 4px; text-align: center;">S.N</th>
+            <th style="border: 1px solid black; padding: 4px; text-align: center;">Item Id</th>
+                <th style="border: 1px solid black; padding: 4px; text-align: center;">quentity</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:CurrentItemList">
+        <tr>
+            <td style="border: 1px solid black; padding: 4px; text-align: right;" data-bind="text: $index() + 1"></td>
+            <td style="border: 1px solid black; padding: 4px; text-align: right;" data-bind="text:itemId"></td>
+            <td style="border: 1px solid black; padding: 4px; text-align: right;" data-bind="text:quentity"></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+@section Scripts {
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/currentiteminfo/currentitemcontroller.js"></script>
+    <script src="~/js/currentiteminfo/currentitemmodel.js"></script>
+    <script>
+        {
+            var obj = new currentitemcontroller();
+            ko.applyBindings(obj);
+        }
+    </script>
+}

@@ -24,6 +24,7 @@ var customerController = function () {
     //search bar
     self.searchTerm = ko.observable('');
 
+    //get data from API
     self.getdata = function () {
         ajax.get(baseUrl).then(function (result) {
             self.customerList(result.map(item => new customerModel(item)));
@@ -76,7 +77,7 @@ var customerController = function () {
     //            console.log(err);
     //        });
     //};
-
+    //search function
     self.filteredCustomerList = ko.computed(function () {
         var filter = self.searchTerm().toLowerCase();
         if (!filter) {
@@ -89,6 +90,7 @@ var customerController = function () {
             });
         }
     });
+    //pegination function
     self.totalPages = ko.computed(function () {
         return Math.ceil(self.filteredCustomerList().length / self.pageSize());
     });
