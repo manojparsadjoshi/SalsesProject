@@ -16,12 +16,29 @@ namespace Sales.Entity
         [ForeignKey("ItemId")]
         [JsonIgnore]
         public ItemsModel Item { get; set; }
-        public int Quentity {  get; set; }
+        public int Quentity { get; set; }
         public DateTime TransDate { get; set; }
 
-         public StockInOut StockInOut { get; set;}
+        public StockInOut StockInOut { get; set; }
         public TransactionType TransactionType { get; set; }
+
+        [NotMapped]
+        public string ItemName { get; set; }
+
+        [NotMapped]
+        public string TransDateFormatted => TransDate.ToString("yyyy-mm-dd");
+
+        [NotMapped]
+        public string StockInOutText => StockInOut.ToString();
+
+        [NotMapped]
+        public string TransactionTypeText => TransactionType.ToString();
+
+
     }
+
+    
+
     public enum StockInOut
     {
         In,

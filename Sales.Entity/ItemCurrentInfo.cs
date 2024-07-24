@@ -17,5 +17,11 @@ namespace Sales.Entity
         [JsonIgnore]
         public ItemsModel Item { get; set; }
         public int Quentity {  get; set; }
+
+        [NotMapped]
+        public string ItemName {  get; set; }
+
+
     }
+   
 }

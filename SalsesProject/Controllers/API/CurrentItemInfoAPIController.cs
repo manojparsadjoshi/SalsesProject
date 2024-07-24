@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+
+
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Db;
 using Sales.Entity;
+using SalsesProject.Models;
 
 namespace SalsesProject.Controllers.API
 {
@@ -25,10 +30,15 @@ namespace SalsesProject.Controllers.API
                                  select new ItemCurrentInfo
                                  {
                                      Id = item.Id,
-                                     ItemId = item.ItemId,                                    
+                                     ItemId = item.ItemId, 
+                                     ItemName = items.ItemName,
                                      Quentity = item.Quentity
                                  }).ToList();
             return requireditems;
+           
         }
+       
+       
     }
 }
+
