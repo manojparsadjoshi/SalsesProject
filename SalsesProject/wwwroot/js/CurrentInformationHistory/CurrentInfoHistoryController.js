@@ -1,24 +1,26 @@
 ﻿/// <reference path="../knockout.js" />
 /// <reference path="currentinfohistorymodel.js" />
 
-var currentinfohistory = function (item) {
+/// <reference path="../knockout.js" />
+/// <reference path="currentinfohistorymodel.js" />
+var currentinfohistory = function () {
     var self = this;
     self.baseUrl = "/api/ItemHistoryAPI";
     self.CurrentHistoryList = ko.observableArray([]);
     self.filteredHistory = ko.observableArray([]);
-
-    // Pagination
     self.currentPage = ko.observable(1);
     self.pageSize = ko.observable(10);
 
-    // Fetch data from API
     self.getData = function () {
-        ajax.get(self.baseUrl).then(function (result) {
-            //console.log("API result:", result);
-            self.CurrentHistoryList(result.map(item => new currenthistory(item)));
-            self.filteredHistory(self.CurrentHistoryList());  // Initialize the filtered list
-            ko.applyBindings(self);  // Apply bindings here, after data is loaded
-        });
+        ajax.get(self.baseUrl)
+            .then(function (result) {
+                console.log("API result:", result);
+                self.CurrentHistoryList(result.map(item => new currenthistory(item)));
+                self.filteredHistory(self.CurrentHistoryList());
+            })
+            .catch(function (error) {
+                console.error("Error fetching data:", error);
+            });
     };
 
     self.totalPages = ko.computed(function () {
@@ -26,6 +28,9 @@ var currentinfohistory = function (item) {
     });
 
     self.pagedCustomerList = ko.computed(function () {
+        console.log("Filtered History:", self.filteredHistory());
+        console.log("Current Page:", self.currentPage());
+        console.log("Page Size:", self.pageSize());
         if (!self.filteredHistory().length) {
             return [];
         }
@@ -45,12 +50,10 @@ var currentinfohistory = function (item) {
         }
     };
 
-
     self.currentPageStartIndex = ko.computed(function () {
         return (self.currentPage() - 1) * self.pageSize();
     });
 
-    // Initialize data fetch
     self.getData();
 };
 

@@ -26,6 +26,7 @@ namespace SalsesProject.Controllers.API
                               Id = infoHistory.Id,  
                               ItemId = infoHistory.ItemId,
                               Item = item,
+                              ItemName = item.ItemName,
                               Quentity = infoHistory.Quentity,
                               TransDate = infoHistory.TransDate,
                               StockInOut = infoHistory.StockInOut,

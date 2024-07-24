@@ -4,8 +4,8 @@
         <thead>
             <tr>
                 <th>S.N</th>
-                <th>Item Id</th>
-                <th>Quentity</th>
+                <th>ItemName</th>
+                <th>Quantity</th>
                 <th>Transaction Date</th>
                 <th>Stock CheckOut</th>
                 <th>Transaction Type</th>
@@ -13,14 +13,12 @@
         </thead>
         <tbody data-bind="foreach: pagedCustomerList">
             <tr>
-                <td>
-                    <span data-bind="text: $root.currentPageStartIndex() + $index() + 1"></span>
-                </td>
-                <td data-bind="text: itemId"></td>
+                <td data-bind="text: $root.currentPageStartIndex() + $index() + 1"></td>
+                <td data-bind="text: itemName"></td>
                 <td data-bind="text: quentity"></td>
-                <td data-bind="text: transDate"></td>
-                <td data-bind="text: stockInOut"></td>
-                <td data-bind="text: transactionType"></td>
+                <td data-bind="text: transDateFormatted"></td>
+                <td data-bind="text: stockInOutText"></td>
+                <td data-bind="text: transactionTypeText"></td>
             </tr>
         </tbody>
     </table>
@@ -40,16 +38,14 @@
     </nav>
 </div>
 
-
 @section Scripts {
     <script src="~/js/knockout.js"></script>
-    <script src="~/js/currentinformationhistory/currentinfohistorycontroller.js"></script>
     <script src="~/js/currentinformationhistory/currentinfohistorymodel.js"></script>
+    <script src="~/js/currentinformationhistory/currentinfohistorycontroller.js"></script>
     <script>
-        {
+        $(document).ready(function () {
             var obj = new currentinfohistory();
             ko.applyBindings(obj);
-        }
+        });
     </script>
-
 }
