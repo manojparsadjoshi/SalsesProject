@@ -22,15 +22,17 @@ var purchasemasterdetailcontroller = function () {
         });
     }
 
-    
     self.AddPurchase = function () {
         var purchaseData = ko.toJS(self.NewPurchaseOrder());
-        
+
+        // Check if there are any detail items
+        if (!purchaseData.purchaseDetail || purchaseData.purchaseDetail.length === 0) {
+            alert("Add at least one item.");
+            return;
+        }
+
         if (self.IsUpdated()) {
-           
             ajax.put(baseUrl, JSON.stringify(purchaseData))
-                // .done(function (result) {
-                //ajax.put(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
                 .done(function (result) {
                     var updatedPurchase = new masterpurchaseVM(result);
                     var index = self.PurchaseMasterDetailList().findIndex(function (item) {
@@ -45,83 +47,34 @@ var purchasemasterdetailcontroller = function () {
                 })
                 .fail(function (err) {
                     console.error("Error updating purchase:", err);
+                    if (err.responseJSON && err.responseJSON.message) {
+                        alert("Error: " + err.responseJSON.message);
+                    } else {
+                        alert("An error occurred while updating the purchase. Please check all inputs and try again.");
+                    }
                 });
-        }
-        else {
+        } else {
             ajax.post(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
-            
                 .done(function (result) {
-                
                     self.PurchaseMasterDetailList.push(new masterpurchaseVM(result));
                     self.resetForm();
                     self.getData();
                     $('#purchaseModal').modal('hide');
                 })
                 .fail(function (err) {
-                    console.log(err);
+                    console.error("Error adding purchase:", err);
+                    if (err.responseJSON && err.responseJSON.message) {
+                        alert("Error: " + err.responseJSON.message);
+                    } else {
+                        alert("An error occurred while adding the purchase. Please check all inputs and try again.");
+                    }
                 });
         }
     }
 
-
-
-
-
-
-
-
-    //self.AddPurchase = function () {
-    //    var purchaseData = ko.toJS(self.NewPurchaseOrder());
-    //    if (!purchaseData.purchaseDetail || purchaseData.purchaseDetail.length === 0) {
-    //        alert("Add at least one item.");
-    //        return;
-    //    }
-    //    if (self.IsUpdated()) {
-    //        //ajax.put(baseUrl, JSON.stringify(purchaseData))
-    //        // .done(function (result) {
-    //        ajax.put(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
-    //            .done(function (result) {
-    //                var updatedPurchase = new masterpurchaseVM(result);
-    //                var index = self.PurchaseMasterDetailList().findIndex(function (item) {
-    //                    return item.id() == updatedPurchase.id();
-    //                });
-    //                if (index >= 0) {
-    //                    self.PurchaseMasterDetailList().replace(self.PurchaseMasterDetailList()[index], updatedPurchase);
-    //                }
-    //                self.resetForm();
-    //                self.getData();
-    //                $('#purchaseModal').modal('hide');
-    //            })
-    //              .fail(function (err) {
-    //    if (err.responseJSON && err.responseJSON.message) {
-    //        alert("Error: " + err.responseJSON.message);
-    //    } else {
-    //        alert("An error occurred while saving the purchase. Please check all inputs and try again.");
-    //    }
-    //    console.error("Error details:", err);
-    //});
-
-
-    //            //.fail(function (err) {
-    //            //    console.error("Error updating Purchases:", err);
-    //            //});
-    //    } else {
-    //        ajax.post(baseUrl, ko.toJSON(self.NewPurchaseOrder()))
-    //            .done(function (result) {
-    //                self.PurchaseMasterDetailList.push(new masterpurchaseVM(result));
-    //                self.resetForm();
-    //                self.getData();
-    //                $('#purchaseModal').modal('hide');
-    //            })
-    //            .fail(function (err) {
-    //                console.log(err);
-    //            });
-    //    }
-    //}
-
     self.DeletePurchase = function (model) {
         ajax.delete(baseUrl + "?id=" + model.id())
-            .done(function (result) {
+            .done(function () {
                 self.PurchaseMasterDetailList.remove(function (item) {
                     return item.id() === model.id();
                 });
@@ -129,6 +82,28 @@ var purchasemasterdetailcontroller = function () {
                 console.error("Error deleting purchase:", err);
             });
     };
+    //Delete functionality
+    //self.DeleteCustomer = function (model) {
+    //    self.customerToDelete(model);
+    //    setTimeout(function () {
+    //        $('#deleteConfirmModal').modal('show');
+    //    }, 100);
+    //};
+    //self.confirmDelete = function () {
+    //    var model = self.customerToDelete();
+    //    if (model) {
+    //        ajax.delete(baseUrl + "/id?id=" + model.customerId())
+    //            .done((result) => {
+    //                self.customerList.remove(model);
+    //                $('#deleteConfirmModal').modal('hide');
+    //            })
+    //            .fail((err) => {
+    //                console.log(err);
+    //                $('#deleteConfirmModal').modal('hide');
+    //            });
+    //    }
+    //};
+
     self.SelectVendor = function (model) {
         var purchasedata = ko.toJS(model);
         var newPurchaseData = new masterpurchaseVM(purchasedata);
@@ -142,36 +117,6 @@ var purchasemasterdetailcontroller = function () {
         ko.tasks.runEarly();
     }
 
-    //self.SelectVendor = function (model) {
-    //    var purchasedata = ko.toJS(model);
-    //    var newPurchaseData = new masterpurchaseVM(purchasedata);
-    //    newPurchaseData.purchaseDetail(purchasedata.purchaseDetail.map(function (detail) {
-    //        var detailVM = new detailpurchaseVM(detail);
-    //        return detailVM;
-    //    }));
-
-    //    self.NewPurchaseOrder(newPurchaseData);
-    //    // Recalculate amounts
-    //    self.NewPurchaseOrder().purchaseDetail().forEach(function (detail) {
-    //        detail.amount(detail.quentity() * detail.price());
-    //    });
-    //    self.NewPurchaseOrder().updateBillAmount();
-    //    self.IsUpdated(true);
-    //    $('#purchaseModal').modal('show');
-    //    ko.tasks.runEarly();
-    //}
-
-    //self.getVendorsName = function () {
-    //    var url = baseUrl + "/VenderName";
-    //    ajax.get(url).then(function (result) {
-    //        console.log("Vendor data received:", result);
-    //        self.VendorsNameList(result.map(item => new vendornamemodel(item)));
-    //        console.log("Mapped vendor list:", self.VendorsNameList());
-    //    }).catch(function (error) {
-    //        console.error("Error fetching vendors:", error);
-    //    });
-    //}
-
     self.getVendorsName = function () {
         var url = baseUrl + "/VenderName";
         ajax.get(url).then(function (result) {
@@ -183,8 +128,6 @@ var purchasemasterdetailcontroller = function () {
         });
     }
 
-
-
     self.getItemsName = function () {
         var url = baseUrl + "/ItemName";
         ajax.get(url).then(function (result) {
@@ -192,7 +135,7 @@ var purchasemasterdetailcontroller = function () {
             self.ItemsNameList(result.map(item => new itemnamemodel({
                 itemId: item.itemId,
                 itemName: item.itemName,
-                unit: item.unit  // Make sure this is included in your API response
+                unit: item.unit
             })));
             console.log("Mapped item list:", self.ItemsNameList());
         }).catch(function (error) {
@@ -208,22 +151,26 @@ var purchasemasterdetailcontroller = function () {
     self.updateUnit = function (item, event) {
         var selectedItemId = event.target.value;
         var selectedItem = self.ItemsNameList().find(function (item) {
-            return item.itemId() == selectedItemId;  // Note the () to get the observable value
+            return item.itemId() == selectedItemId;
         });
         if (selectedItem) {
-            item.unit(selectedItem.unit());  // This should work now
+            item.unit(selectedItem.unit());
         }
     };
 
     self.removeItem = function (item) {
         self.NewPurchaseOrder().purchaseDetail.remove(item);
-    }
+        self.recalculateAmounts(); // Recalculate amounts after removing the item
+    };
 
     self.recalculateAmounts = function () {
-        self.NewPurchaseOrder().purchaseDetails().forEach(function (detail) {
-            detail.amount(detail.quantity() * detail.price());
+        var totalAmount = 0;
+        self.NewPurchaseOrder().purchaseDetail().forEach(function (detail) {
+            detail.amount(detail.quentity() * detail.price());
+            totalAmount += detail.amount();
         });
-        self.NewPurchaseOrder().updateBillAmount();
+        self.NewPurchaseOrder().billAmount(totalAmount);
+        self.NewPurchaseOrder().netAmount(totalAmount - self.NewPurchaseOrder().discount());
     };
 
     self.setCreateMode = function () {
@@ -258,7 +205,7 @@ var ajax = {
             },
             method: "POST",
             url: url,
-            data: (data)
+            data: data
         });
     },
     put: function (url, data) {

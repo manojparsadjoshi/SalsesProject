@@ -237,7 +237,7 @@ namespace Sales.Services.PurchaseMasterDetail
                 VenderName = vender.Name,
             });
             return data;
-        }        
+        }
         public bool Update(PurchaseMasterVM model)
         {
             var existingMasterData = _context.purchaseMasterModels.Find(model.Id);
@@ -245,54 +245,38 @@ namespace Sales.Services.PurchaseMasterDetail
             {
                 return false;
             }
-            existingMasterData.Id = model.Id;
+
+            // Update master data
             existingMasterData.VenderId = model.VenderId;
             existingMasterData.InvoiceNumber = model.InvoiceNumber;
             existingMasterData.BillAmount = model.BillAmount;
             existingMasterData.Discount = model.Discount;
             existingMasterData.NetAmount = model.NetAmount;
-            var masterdata = _context.purchaseMasterModels.Update(existingMasterData);
+
+            _context.purchaseMasterModels.Update(existingMasterData);
             _context.SaveChanges();
 
+            // Update and remove existing details
             var existingDetailsData = _context.purchaseMasterDetailModels.Where(x => x.PurchaseMasterId == existingMasterData.Id).ToList();
-
-            foreach (var item in existingDetailsData)
-            {
-                var itemcurrentinfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
-                if (itemcurrentinfo != null)
-                {
-                    itemcurrentinfo.Quentity -= item.Quentity;
-                    _context.itemCurrentInfos.Update(itemcurrentinfo);
-                    _context.SaveChanges();
-                }
-
-                var historyinfo = new ItemCurrentInfoHistoryModel
-                {
-                    Id = 0,
-                    ItemId = item.ItemId,
-                    Quentity = item.Quentity,
-                    TransDate = DateTime.Now,
-                    StockInOut = StockInOut.Out,
-                    TransactionType = TransactionType.sales
-                };
-                _context.InfoHistoryModels.Add(historyinfo);
-                _context.SaveChanges();
-            };
             _context.purchaseMasterDetailModels.RemoveRange(existingDetailsData);
+            _context.SaveChanges();
 
-            var detailsdata = from c in model.PurchaseDetail
-                              select new PurchaseDetailModel
-                              {
-                                  Id = 0,
-                                  ItemId = c.ItemId,
-                                  Unit = c.Unit,
-                                  Quentity = c.Quentity,
-                                  Price = c.Price,
-                                  Amount = c.Amount,
-                                  PurchaseMasterId = masterdata.Entity.Id
-                              };
+            // Add updated details
+            var detailsdata = model.PurchaseDetail.Select(c => new PurchaseDetailModel
+            {
+                Id = 0,
+                ItemId = c.ItemId,
+                Unit = c.Unit,
+                Quentity = c.Quentity,
+                Price = c.Price,
+                Amount = c.Amount,
+                PurchaseMasterId = existingMasterData.Id
+            }).ToList();
+
             _context.purchaseMasterDetailModels.AddRange(detailsdata);
             _context.SaveChanges();
+
+            // Update item quantities and history
             foreach (var item in detailsdata)
             {
                 var itemcurrentinfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
@@ -302,10 +286,8 @@ namespace Sales.Services.PurchaseMasterDetail
                     _context.itemCurrentInfos.Update(itemcurrentinfo);
                     _context.SaveChanges();
 
-
                     var historyinfo = new ItemCurrentInfoHistoryModel
                     {
-                        Id = 0,
                         ItemId = item.ItemId,
                         Quentity = item.Quentity,
                         TransDate = DateTime.Now,
@@ -319,17 +301,14 @@ namespace Sales.Services.PurchaseMasterDetail
                 {
                     var newitemInfo = new ItemCurrentInfo
                     {
-                        Id = 0,
                         ItemId = item.ItemId,
-                        Quentity = item.Quentity,
+                        Quentity = item.Quentity
                     };
                     _context.itemCurrentInfos.Add(newitemInfo);
-                    _context.Add(newitemInfo);
                     _context.SaveChanges();
 
                     var historyinfo = new ItemCurrentInfoHistoryModel
                     {
-                        Id = 0,
                         ItemId = item.ItemId,
                         Quentity = item.Quentity,
                         TransDate = DateTime.Now,
@@ -339,9 +318,11 @@ namespace Sales.Services.PurchaseMasterDetail
                     _context.InfoHistoryModels.Add(historyinfo);
                     _context.SaveChanges();
                 }
-            };
+            }
+
             return true;
-        }      
+        }
+
     }
-    
+
 }
