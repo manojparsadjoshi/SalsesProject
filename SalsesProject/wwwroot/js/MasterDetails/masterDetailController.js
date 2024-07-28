@@ -1,10 +1,10 @@
 ﻿/// <reference path="../knockout.js" />
 
-
 const mode = {
     create: 1,
     update: 2
 };
+
 var masterdetailsController = function () {
     var self = this;
     const baseUrl = "/api/SalesDetailsAPIServices";
@@ -14,37 +14,32 @@ var masterdetailsController = function () {
     self.NewSales = ko.observable(new mastermodelVM());
     self.SelectedSales = ko.observable(new mastermodelVM());
     self.IsUpdated = ko.observable(false);
-    //self.NewSales().sales.push(new detailsmodelVM());
-    //Get All Data
+    self.purchaseToDelete = ko.observable(null);
+
+    // Get All Data
     self.getData = function () {
         ajax.get(baseUrl + "/GetAll").then(function (result) {
             self.SalesList(result.map(item => new mastermodelVM(item)));
         });
-    }
+    };
     self.getData();
     masterdetailsController.ItemsNameList = self.ItemsNameList;
 
-    // Get CustomerNames
-
+    // Get Customer Names
     self.getCustomersName = function () {
         var url = baseUrl + "/GetCustomersName";
-        console.log("Fetching products from URL: " + url);
-
         return ajax.get(url).then(function (data) {
-            // console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
                 return new customernamemodel(item);
             });
             self.CustomersNameList(mappedProducts);
-            console.log("Customers Data: ", self.CustomersNameList());
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching customersname: ", textStatus, errorThrown);
         });
     };
-
     self.getCustomersName();
 
-    //Get ItemNames
+    // Get Item Names
     self.getItemsName = function () {
         var url = baseUrl + "/GetItemsName";
         return ajax.get(url).then(function (data) {
@@ -56,16 +51,26 @@ var masterdetailsController = function () {
                 });
             });
             self.ItemsNameList(mappedProducts);
-            console.log("Items loaded:", self.ItemsNameList()); // Add this line for debugging
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching itemsname: ", textStatus, errorThrown);
         });
     };
-
     self.getItemsName();
 
+    // Add Sales
     self.AddSales = function () {
         var salesData = ko.toJS(self.NewSales());
+
+        // Check if there are any valid detail items
+        var validItems = salesData.sales.filter(item => item.itemId && item.quantity > 0);
+        if (validItems.length === 0) {
+            alert("Please add at least one valid item to the sale.");
+            return;
+        }
+
+        // Proceed with adding / updating only valid items
+        salesData.sales = validItems;
+
         if (self.IsUpdated()) {
             ajax.put(baseUrl + "/Update", JSON.stringify(salesData))
                 .done(function (result) {
@@ -82,11 +87,14 @@ var masterdetailsController = function () {
                 })
                 .fail(function (err) {
                     console.error("Error updating sales:", err);
+                    if (err.responseJSON && err.responseJSON.message) {
+                        alert("Error updating sale: " + err.responseJSON.message);
+                    } else {
+                        alert("An error occurred while updating the sale. Please check all inputs and try again.");
+                    }
                 });
-        }
-        else {
-
-            ajax.post(baseUrl + "/Add", ko.toJSON(self.NewSales()))
+        } else {
+            ajax.post(baseUrl + "/Add", JSON.stringify(salesData))
                 .done(function (result) {
                     self.SalesList.push(new mastermodelVM(result));
                     self.resetForm();
@@ -95,24 +103,39 @@ var masterdetailsController = function () {
                 })
                 .fail(function (err) {
                     console.error("Error adding sales:", err);
-                });;
-        }
-    }
-
-   
-
-    self.DeleteSales = function (model) {
-        ajax.delete(baseUrl + "/Delete?id=" + model.id())
-            .done(function (result) {
-                self.SalesList.remove(function (item) {
-                    return item.id() === model.id();
+                    if (err.responseJSON && err.responseJSON.message) {
+                        alert("Error adding sale: " + err.responseJSON.message);
+                    } else {
+                        alert("An error occurred while adding the sale. Please check all inputs and try again.");
+                    }
                 });
-            }).fail(function (err) {
-                console.error("Error deleting sale:", err);
-            });
+        }
     };
 
+    self.DeleteSales = function (model) {
+        self.purchaseToDelete(model);
+        setTimeout(function () {
+            $('#deleteConfirmModal').modal('show');
+        }, 100);
+    };
 
+    self.confirmDelete = function () {
+        var model = self.purchaseToDelete();
+        if (model) {
+            ajax.delete(baseUrl + "/Delete?id=" + model.id())
+          
+                .done(function () {
+                    self.SalesList.remove(function (item) {
+                        return item.id() === model.id();
+                    });
+                    $('#deleteConfirmModal').modal('hide');
+                })
+                .fail(function (err) {
+                    console.error("Error deleting sale:", err);
+                    $('#deleteConfirmModal').modal('hide');
+                });
+        }
+    };
 
     self.SelectSale = function (model) {
         var clonedModel = ko.toJS(model);
@@ -124,11 +147,10 @@ var masterdetailsController = function () {
         $('#salesModal').modal('show');
     };
 
-
-    self.resetForm = () => {
+    self.resetForm = function () {
         self.NewSales(new mastermodelVM());
         self.IsUpdated(false);
-        self.NewSales().sales.push(new detailsmodelVM()); 
+        self.NewSales().sales.push(new detailsmodelVM());
     };
 
     self.openCreateModal = function () {
@@ -143,8 +165,6 @@ var masterdetailsController = function () {
         self.NewSales().sales.remove(item);
     };
 };
-
-
 
 var ajax = {
     get: function (url) {
@@ -162,7 +182,7 @@ var ajax = {
             },
             method: "POST",
             url: url,
-            data: (data)
+            data: data
         });
     },
     put: function (url, data) {
@@ -182,4 +202,5 @@ var ajax = {
             url: route,
         });
     }
-}
+};
+
