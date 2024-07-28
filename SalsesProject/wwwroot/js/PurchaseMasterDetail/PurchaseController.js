@@ -10,6 +10,7 @@ var purchasemasterdetailcontroller = function () {
     self.selectedPurchase = ko.observableArray([]);
     self.NewPurchaseOrder = ko.observable(new masterpurchaseVM());
     self.IsUpdated = ko.observable(false);
+    self.purchaseToDelete = ko.observable();
 
     self.getData = function () {
         console.log("Fetching data...");
@@ -73,15 +74,38 @@ var purchasemasterdetailcontroller = function () {
     }
 
     self.DeletePurchase = function (model) {
-        ajax.delete(baseUrl + "?id=" + model.id())
-            .done(function () {
-                self.PurchaseMasterDetailList.remove(function (item) {
-                    return item.id() === model.id();
-                });
-            }).fail(function (err) {
-                console.error("Error deleting purchase:", err);
-            });
+        self.purchaseToDelete(model);
+        setTimeout(function () {
+            $('#deleteConfirmModal').modal('show');
+        }, 100);
     };
+    self.confirmDelete = function () {
+        var model = self.purchaseToDelete();
+        if (model) {
+            ajax.delete(baseUrl + "?id=" + model.id())
+                .done(function () {
+                    self.PurchaseMasterDetailList.remove(function (item) {
+                        return item.id() === model.id();
+                    });
+                    $('#deleteConfirmModal').modal('hide');
+                })
+                .fail(function (err) {
+                    console.error("Error deleting purchase:", err);
+                    $('#deleteConfirmModal').modal('hide');
+                });
+        }
+    };
+
+    //self.DeletePurchase = function (model) {
+    //    ajax.delete(baseUrl + "?id=" + model.id())
+    //        .done(function () {
+    //            self.PurchaseMasterDetailList.remove(function (item) {
+    //                return item.id() === model.id();
+    //            });
+    //        }).fail(function (err) {
+    //            console.error("Error deleting purchase:", err);
+    //        });
+    //};
     //Delete functionality
     //self.DeleteCustomer = function (model) {
     //    self.customerToDelete(model);
