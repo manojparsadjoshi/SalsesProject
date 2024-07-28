@@ -3,8 +3,7 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal" data-bind="click: setCreateMode">
         Create New Purchase
     </button>
-
-    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,8 +14,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="row" data-bind="with: NewPurchaseOrder">
+                    <form data-bind="with: NewPurchaseOrder">
+                        <div class="row">
                             <div class="col-md-4 form-group">
                                 <label>Vendor Name:</label>
                                 <select data-bind="options: $root.VendorsNameList,
@@ -49,17 +48,16 @@
                                 <tr>
                                     <th>Item Name</th>
                                     <th>Unit</th>
-                                    <th>Quentity</th>
+                                    <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Amount</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody data-bind="foreach: NewPurchaseOrder().purchaseDetail">
+                            <tbody data-bind="foreach: purchaseDetail">
                                 <tr>
                                     <td>
-                                        <select class="form-control" name="itemname"
-                                              data-bind="options: $root.ItemsNameList,
+                                        <select class="form-control" data-bind="options: $root.ItemsNameList,
                                                optionsText: 'itemName',
                                                optionsValue: 'itemId',
                                                value: itemId,
@@ -68,21 +66,20 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control" data-bind="value: unit, enable: false" /></td>
-                                    <td><input type="number" class="form-control" data-bind="value: quentity, valueUpdate: 'input', event: {change: $root.NewPurchaseOrder().updateBillAmount}" min="0" /></td>
-                                    <td><input type="number" class="form-control" data-bind="value: price, valueUpdate: 'input', event: {change: $root.NewPurchaseOrder().updateBillAmount}" min="0" /></td>
+                                    <td><input type="number" class="form-control" data-bind="value: quentity, valueUpdate: 'input', event: {change: $parent.updateBillAmount}" min="0" /></td>
+                                    <td><input type="number" class="form-control" data-bind="value: price, valueUpdate: 'input', event: {change: $parent.updateBillAmount}" min="0" /></td>
                                     <td><input type="number" step="0.01" class="form-control" data-bind="value: amount, enable: false" /></td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" data-bind="click: $root.removeItem">
-                                            <i class="fa-solid fa-trash-can"></i>Remove
+                                            Remove
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-success mb-3" data-bind="click: $root.AddItem"><i class="fa-solid fa-plus"></i>Add Item</button>
+                        <button class="btn btn-success mb-3" data-bind="click: $root.AddItem">Add Item</button>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-bind="click: $root.AddPurchase">
                         <span data-bind="ifnot: IsUpdated">Create</span>

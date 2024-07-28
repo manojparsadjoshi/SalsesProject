@@ -1,5 +1,9 @@
-﻿<div class="container mt-4">
+﻿<div class="container mt-4" data-bind="with: currentInfoHistory">
     <h2 style="text-align: center;">Item History</h2>
+
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search history..." data-bind="value: searchTerm, valueUpdate: 'input'">
+    </div>
     <table class="table table-striped mt-4">
         <thead>
             <tr>
@@ -11,9 +15,9 @@
                 <th>Transaction Type</th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: pagedCustomerList">
+        <tbody data-bind="foreach: pagedHistoryList">
             <tr>
-                <td data-bind="text: $root.currentPageStartIndex() + $index() + 1"></td>
+                <td data-bind="text: $parent.currentPageStartIndex() + $index() + 1"></td>
                 <td data-bind="text: itemName"></td>
                 <td data-bind="text: quentity"></td>
                 <td data-bind="text: transDateFormatted"></td>
@@ -44,8 +48,10 @@
     <script src="~/js/currentinformationhistory/currentinfohistorycontroller.js"></script>
     <script>
         $(document).ready(function () {
-            var obj = new currentinfohistory();
-            ko.applyBindings(obj);
+            var viewModel = {
+                currentInfoHistory: new CurrentInfoHistory()
+            };
+            ko.applyBindings(viewModel);
         });
     </script>
 }

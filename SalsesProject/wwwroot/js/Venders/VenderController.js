@@ -15,6 +15,7 @@ var VendorController = function () {
     self.CurrentVendor = ko.observableArray([]);
     self.mode = ko.observable(mode.create);
     self.vendorToDelete = ko.observable();
+    self.NewVendor().errors = ko.validation;
 
     self.GetDatas = function () {
         ajax.get(baseUrl + "/GetAll").then(function (result) {

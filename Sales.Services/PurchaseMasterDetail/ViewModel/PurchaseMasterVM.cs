@@ -24,6 +24,7 @@ namespace Sales.Services.PurchaseMasterDetail.ViewModel
         public string ? ItemName { get; set; }
         public String Unit { get; set; }
         public int Quentity {  get; set; }
+        public decimal Price {  get; set; }
         public decimal Amount { get; set; }
     }
 }

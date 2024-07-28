@@ -1,12 +1,11 @@
 ﻿/// <reference path="../knockout.js" />
-
 var masterpurchaseVM = function (item) {
     var self = this;
     item = item || {};
     self.id = ko.observable(item.id || 0);
     self.venderId = ko.observable(item.venderId || 0);
     self.vendorName = ko.observable(item.vendorName || '');
-    self.invoiceNumber = ko.observable(item.invoiceNumber || 0);
+    self.invoiceNumber = ko.observable(item.invoiceNumber || '');
     self.billAmount = ko.observable(item.billAmount || 0);
     self.discount = ko.observable(item.discount || 0);
     self.netAmount = ko.observable(item.netAmount || 0);
@@ -28,8 +27,8 @@ var masterpurchaseVM = function (item) {
     };
 
     self.discount.subscribe(self.updateNetAmount);
+    self.billAmount.subscribe(self.updateNetAmount);
 };
-
 var detailpurchaseVM = function (item) {
     var self = this;
     item = item || {};
@@ -42,6 +41,7 @@ var detailpurchaseVM = function (item) {
         return (parseFloat(self.quentity()) || 0) * (parseFloat(self.price()) || 0);
     });
 
+    // These subscriptions will trigger a re-computation of amount
     self.quentity.subscribe(function () {
         self.amount.notifySubscribers();
     });

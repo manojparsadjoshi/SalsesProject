@@ -18,6 +18,7 @@ namespace Sales.Entity
         public string Unit { get; set; }
         public int Quentity {  get; set; }
         public decimal Amount { get; set; }
+        public decimal Price {  get; set; }
 
         [ForeignKey("PurchaseMasterId")]
         public int PurchaseMasterId {  get; set; }

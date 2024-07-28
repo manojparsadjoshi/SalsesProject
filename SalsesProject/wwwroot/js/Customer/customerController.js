@@ -77,6 +77,7 @@ var customerController = function () {
     //            console.log(err);
     //        });
     //};
+
     //search function
     self.filteredCustomerList = ko.computed(function () {
         var filter = self.searchTerm().toLowerCase();
@@ -90,6 +91,8 @@ var customerController = function () {
             });
         }
     });
+
+
     //pegination function
     self.totalPages = ko.computed(function () {
         return Math.ceil(self.filteredCustomerList().length / self.pageSize());
@@ -110,16 +113,18 @@ var customerController = function () {
         }
     };
 
+    self.currentPageStartIndex = ko.computed(function () {
+        return (self.currentPage() - 1) * self.pageSize();
+    });
+
+
+    //Delete functionality
     self.DeleteCustomer = function (model) {
         self.customerToDelete(model);
         setTimeout(function () {
             $('#deleteConfirmModal').modal('show');
         }, 100);
     };
-
-    self.currentPageStartIndex = ko.computed(function () {
-        return (self.currentPage() - 1) * self.pageSize();
-    });
     self.confirmDelete = function () {
         var model = self.customerToDelete();
         if (model) {

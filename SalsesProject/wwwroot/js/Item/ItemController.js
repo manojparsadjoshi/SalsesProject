@@ -85,7 +85,7 @@ var itemController = function () {
             self.NewItem().errors.showAllMessages();
         }
     };
-
+    
     self.Deleteitem = function (model) {
         ajax.delete(baseUrl + "?id=" + model.itemId())
             .done((result) => {

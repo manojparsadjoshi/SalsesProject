@@ -49,6 +49,7 @@ namespace Sales.Services.PurchaseMasterDetail
                                       ItemId = c.ItemId,
                                       Unit = c.Unit,
                                       Quentity = c.Quentity,
+                                      Price = c.Price,
                                       Amount = c.Amount,
 
                                       PurchaseMasterId = masterdata.Entity.Id
@@ -171,6 +172,7 @@ namespace Sales.Services.PurchaseMasterDetail
                                                        ItemName = d.Item.ItemName,
                                                        Unit = d.Unit,
                                                        Quentity = d.Quentity,
+                                                       Price = d.Price,
                                                        Amount = d.Amount
                                                    }).ToList();
                     dataList.Add(masterdatas);
@@ -209,6 +211,7 @@ namespace Sales.Services.PurchaseMasterDetail
                                                    ItemName = detail.Item.ItemName,
                                                    Unit = detail.Unit,
                                                    Quentity = detail.Quentity,
+                                                   Price = detail.Price,
                                                    Amount = detail.Amount
                                                }).ToList();
                 return masterdatas;
@@ -284,6 +287,7 @@ namespace Sales.Services.PurchaseMasterDetail
                                   ItemId = c.ItemId,
                                   Unit = c.Unit,
                                   Quentity = c.Quentity,
+                                  Price = c.Price,
                                   Amount = c.Amount,
                                   PurchaseMasterId = masterdata.Entity.Id
                               };

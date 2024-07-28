@@ -99,6 +99,8 @@ var masterdetailsController = function () {
         }
     }
 
+   
+
     self.DeleteSales = function (model) {
         ajax.delete(baseUrl + "/Delete?id=" + model.id())
             .done(function (result) {

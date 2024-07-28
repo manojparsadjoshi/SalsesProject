@@ -129,13 +129,11 @@ var purchasemasterdetailcontroller = function () {
                 console.error("Error deleting purchase:", err);
             });
     };
-
     self.SelectVendor = function (model) {
         var purchasedata = ko.toJS(model);
         var newPurchaseData = new masterpurchaseVM(purchasedata);
         newPurchaseData.purchaseDetail(purchasedata.purchaseDetail.map(function (detail) {
-            var detailVM = new detailpurchaseVM(detail);
-            return detailVM;
+            return new detailpurchaseVM(detail);
         }));
 
         self.NewPurchaseOrder(newPurchaseData);
@@ -143,6 +141,25 @@ var purchasemasterdetailcontroller = function () {
         $('#purchaseModal').modal('show');
         ko.tasks.runEarly();
     }
+
+    //self.SelectVendor = function (model) {
+    //    var purchasedata = ko.toJS(model);
+    //    var newPurchaseData = new masterpurchaseVM(purchasedata);
+    //    newPurchaseData.purchaseDetail(purchasedata.purchaseDetail.map(function (detail) {
+    //        var detailVM = new detailpurchaseVM(detail);
+    //        return detailVM;
+    //    }));
+
+    //    self.NewPurchaseOrder(newPurchaseData);
+    //    // Recalculate amounts
+    //    self.NewPurchaseOrder().purchaseDetail().forEach(function (detail) {
+    //        detail.amount(detail.quentity() * detail.price());
+    //    });
+    //    self.NewPurchaseOrder().updateBillAmount();
+    //    self.IsUpdated(true);
+    //    $('#purchaseModal').modal('show');
+    //    ko.tasks.runEarly();
+    //}
 
     //self.getVendorsName = function () {
     //    var url = baseUrl + "/VenderName";
