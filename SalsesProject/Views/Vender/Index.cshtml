@@ -1,14 +1,14 @@
 ﻿
 
 <div class="container mt-4">
-     <h2>Vendor Management System</h2>
+    <h2>Vendor Management System</h2>
     <div class="row mb-3">
         <div class="col-md-6">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vendorModal">
                 Create New Vendor
             </button>
         </div>
-        
+
     </div>
     <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
@@ -22,18 +22,18 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="row" data-bind="with: IsUpdated() ? SelectedVendor : NewVendor">
-                            <div class="col-md-4 form-group">
+                        <div class="row" data-bind="with: IsUpdated() ? SelectedVendor() : NewVendor()">
+                            <div class="form-group">
                                 <label>Full Name:</label>
-                                <input type="text" class="form-control" placeholder="Enter Vender Name" data-bind="value: name" />
+                                <input type="text" class="form-control" placeholder="Enter Vendor Name" data-bind="value: name" />
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="form-group">
                                 <label>Contact Number:</label>
-                                <input type="text" class="form-control" placeholder="Enter Vender Contract No."  data-bind="value: contract">
+                                <input type="text" class="form-control" placeholder="Enter Vendor Contract No." data-bind="value: contract">
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="form-group">
                                 <label>Address:</label>
-                                <input type="text" class="form-control"  placeholder="Enter Vender Address" data-bind="value: address, valueUpdate: 'afterkeydown' " >
+                                <input type="text" class="form-control" placeholder="Enter Vendor Address" data-bind="value: address, valueUpdate: 'afterkeydown'">
                             </div>
                         </div>
                     </form>
@@ -44,12 +44,12 @@
                         <span data-bind="ifnot: IsUpdated">Create</span>
                         <span data-bind="if: IsUpdated">Update</span>
                     </button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click:CloseModel">Close</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <table class="table table-striped mt-4">
         <thead>
             <tr>
@@ -72,7 +72,7 @@
                 </td>
             </tr>
         </tbody>
-    </table> 
+    </table>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
@@ -91,12 +91,14 @@
                 </div>
             </div>
         </div>
-   
+
     </div>
     @section Scripts {
-    <script src="~/js/knockout.js"></script>
-    <script src="~/js/venders/vendermodel.js"></script>
-    <script src="~/js/venders/vendercontroller.js"></script>
+        <script src="~/js/knockout.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.4/knockout.validation.min.js"></script>
+        <script src="~/js/venders/vendermodel.js"></script>
+        <script src="~/js/venders/vendercontroller.js"></script>
         <script>
             {
                 var obj = new VendorController();

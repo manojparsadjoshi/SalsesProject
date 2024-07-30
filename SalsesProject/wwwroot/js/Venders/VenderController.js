@@ -15,7 +15,9 @@ var VendorController = function () {
     self.CurrentVendor = ko.observableArray([]);
     self.mode = ko.observable(mode.create);
     self.vendorToDelete = ko.observable();
-    self.NewVendor().errors = ko.validation;
+
+    self.NewVendor = ko.observable(new VendorModel());
+    self.NewVendor().errors = ko.validation.group(self.NewVendor());
 
     self.GetDatas = function () {
         ajax.get(baseUrl + "/GetAll").then(function (result) {
@@ -26,6 +28,13 @@ var VendorController = function () {
     self.GetDatas();
 
     self.AddVendor = function () {
+
+        var vendortest = self.mode() == mode.create ?self.NewVendor(): self.SelectedVendor();
+        if (!vendortest.isValid()) {
+            vendortest.errors.showAllMessages();
+            return;
+        }
+
         var vendorData = ko.toJS(self.IsUpdated() ? self.SelectedVendor : self.NewVendor);
         switch (self.mode()) {
             case 1:
@@ -41,13 +50,17 @@ var VendorController = function () {
                 ajax.put(baseUrl, JSON.stringify(vendorData))
                     .done(function (result) {
                         self.CurrentVendor.replace(self.SelectedVendor(), new VendorModel(result));
-                        self.CloseModel();
                         self.GetDatas();
+                        self.CloseModel();
                         $('#vendorModal').modal('hide');
+                    })
+                    .fail(function (err) {
+                        console.log(err);
                     });
                 break;
         }
-    }
+
+    };
 
     self.DeleteVendor = function (model) {
         self.vendorToDelete(model);  // No need to create a new VendorModel here

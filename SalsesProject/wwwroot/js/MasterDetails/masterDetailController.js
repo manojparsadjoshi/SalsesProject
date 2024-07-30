@@ -74,16 +74,22 @@ var masterdetailsController = function () {
         if (self.IsUpdated()) {
             ajax.put(baseUrl + "/Update", JSON.stringify(salesData))
                 .done(function (result) {
-                    var updatedSales = new mastermodelVM(result);
-                    var index = self.SalesList().findIndex(function (item) {
-                        return item.id() === updatedSales.id();
-                    });
-                    if (index >= 0) {
-                        self.SalesList.replace(self.SalesList()[index], updatedSales);
-                    }
-                    self.resetForm();
-                    self.getData();
-                    $('#salesModal').modal('hide');
+                    if (result) {
+                        debugger;
+                        var updatedSales = new mastermodelVM(result);
+                        var index = self.SalesList().findIndex(function (item) {
+                            return item.id() === updatedSales.id();
+                        });
+                        if (index >= 0) {
+                            self.SalesList.replace(self.SalesList()[index], updatedSales);
+                        }
+                        self.resetForm();
+                        self.getData();
+                        $('#salesModal').modal('hide');
+                        alert("Updated Successfully"); // Display success message
+                    } else {
+                        alert( "Failes to update sales.");// Display error message
+                    }      
                 })
                 .fail(function (err) {
                     console.error("Error updating sales:", err);
@@ -96,10 +102,21 @@ var masterdetailsController = function () {
         } else {
             ajax.post(baseUrl + "/Add", JSON.stringify(salesData))
                 .done(function (result) {
-                    self.SalesList.push(new mastermodelVM(result));
-                    self.resetForm();
-                    self.getData();
-                    $('#salesModal').modal('hide');
+                    debugger;
+                    if (result) {
+                        debugger;
+                        self.SalesList.push(new mastermodelVM(result));
+                        self.resetForm();
+                        self.getData();
+                        $('#salesModal').modal('hide');
+                        debugger;
+                        alert( "Added successfully."); //Display success message
+                    }
+                    else
+                    {
+                        debugger;
+                        alert("Failed to add sales.");//Dispaly error message
+                    }
                 })
                 .fail(function (err) {
                     console.error("Error adding sales:", err);

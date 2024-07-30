@@ -55,8 +55,8 @@ var itemController = function () {
     ko.validation.init();
 
     self.AddItem = function () {
-        console.log("AddItem called");
-        console.log("NewItem data:", ko.toJS(self.NewItem));
+       // console.log("AddItem called");
+       // console.log("NewItem data:", ko.toJS(self.NewItem));
         if (self.NewItem().isValid()) {
             var selectedCategory = ko.utils.arrayFirst(self.CategoryNameList(), function (cat) {
                 return cat.id() == self.NewItem().category();

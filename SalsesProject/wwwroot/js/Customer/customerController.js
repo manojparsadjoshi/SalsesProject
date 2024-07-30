@@ -15,8 +15,9 @@ var customerController = function () {
     self.IsUpdate = ko.observable(false);
     self.selectedCustomer = ko.observable(new customerModel());
     self.mode = ko.observable(mode.create);
-    //validation
+    // filled data validation
     self.newCustomer().errors = ko.validation.group(self.newCustomer());
+
     self.customerToDelete = ko.observable();
     //pagination
     self.currentPage = ko.observable(1);
