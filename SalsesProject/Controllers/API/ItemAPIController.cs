@@ -28,7 +28,7 @@ namespace SalsesProject.Controllers.API
             return Ok(items);
         }
         [HttpPost]
-        public bool Create(ItemsModel item)
+        public ItemResult Create(ItemsModel item)
         {
             return _services.Create(item);
         }
@@ -43,9 +43,9 @@ namespace SalsesProject.Controllers.API
             return Ok(item);
         }
         [HttpPut("{id}")]
-        public void Update(ItemsModel item)
+        public ItemResult Update(ItemsModel item)
         {
-            _services.Update(item);
+           return _services.Update(item);
         }
         [HttpDelete]
         public int Delete(int id)

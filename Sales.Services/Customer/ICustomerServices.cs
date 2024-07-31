@@ -6,8 +6,8 @@ namespace Sales.Services.Customer
     {
         List<CustomerModel> GetAll();
         CustomerModel GetById(int Id);
-        bool Create(CustomerModel customer);
-        bool Update(CustomerModel customer);
+        CustomerResult Create(CustomerModel customer);
+        CustomerResult Update(CustomerModel customer);
         int Delete(int id);
     }
 }

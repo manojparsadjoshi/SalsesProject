@@ -41,9 +41,14 @@ var customerController = function () {
                 case mode.create:
                     ajax.post(baseUrl + "/Add", ko.toJSON(self.newCustomer()))
                         .done(function (result) {
-                            self.customerList.push(new customerModel(result));
-                            self.getdata();
-                            self.CloseModel();
+                            if (result.success) {
+                                self.customerList.push(new customerModel(result));
+                                self.getdata();
+                                self.CloseModel();
+                                toastr.success("New Customer Add Successfully.");
+                            } else {
+                                alert("Customer name already exist!");
+                            }
                         })
                         .fail(function (err) {
                             console.log(err);
@@ -52,10 +57,15 @@ var customerController = function () {
                 case mode.update:
                     ajax.put(baseUrl + "/id", ko.toJSON(self.newCustomer()))
                         .done(function (result) {
-                            self.customerList.replace(self.newCustomer());
-                            self.resetForm();
-                            self.getdata();
-                            self.CloseModel();
+                            if (result.success) {
+                                self.customerList.replace(self.newCustomer());
+                                self.resetForm();
+                                self.getdata();
+                                self.CloseModel();
+                                toastr.success("New Customer Update Successfully.");
+                            } else {
+                                alert("Name already exist!");
+                            }
                         })
                         .fail(function (err) {
                             console.log(err);
@@ -133,6 +143,7 @@ var customerController = function () {
                 .done((result) => {
                     self.customerList.remove(model);
                     $('#deleteConfirmModal').modal('hide');
+                    toastr.success(" Customer Delete Successfully.");
                 })
                 .fail((err) => {
                     console.log(err);

@@ -84,7 +84,7 @@ namespace Sales.Services.PurchaseMasterDetail
                             Quentity = itemdetail.Quentity,
                             TransDate = DateTime.Now,
                             StockInOut = StockInOut.In,
-                            TransactionType = TransactionType.sales
+                            TransactionType = TransactionType.purchase
                         };
                         _context.InfoHistoryModels.Add(historyEntry);
                         _context.SaveChanges();
@@ -125,7 +125,7 @@ namespace Sales.Services.PurchaseMasterDetail
                         Quentity = item.Quentity,
                         TransDate = DateTime.Now,
                         StockInOut = StockInOut.Out,
-                        TransactionType = TransactionType.sales
+                        TransactionType = TransactionType.purchase
                     };
                     _context.InfoHistoryModels.Add(itemsinfohistory);
                     _context.SaveChanges();

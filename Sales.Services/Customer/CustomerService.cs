@@ -3,6 +3,11 @@ using SalsesProject.Models;
 
 namespace Sales.Services.Customer
 {
+    public class CustomerResult
+    {
+        public bool Success { get; set; }
+        public CustomerModel Data { get; set; }
+    }
     public class CustomerService : ICustomerServices
     {
         private readonly ApplicationDbContext _context;
@@ -10,15 +15,16 @@ namespace Sales.Services.Customer
         {
             _context = context;
         }
-        public bool Create(CustomerModel customer)
+        public CustomerResult Create(CustomerModel customer)
         {
-            if (customer != null)
+            var existingcustomer = _context.Customers.FirstOrDefault(x=>x.CustomerName.ToLower() == customer.CustomerName.ToLower());
+            if (existingcustomer != null)
             {
+                return new CustomerResult { Success = false };
+            }
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
-                return true;
-            }
-            return false;
+                return new CustomerResult { Success = true, Data = customer};
         }
 
         public int Delete(int id)
@@ -43,19 +49,19 @@ namespace Sales.Services.Customer
             return _context.Customers.Find(Id);
         }
 
-        public bool Update(CustomerModel customer)
+        public CustomerResult Update(CustomerModel customer)
         {
             var existingdata = _context.Customers.Find(customer.CustomerId);
-            if (existingdata != null)
+            bool existingcustomer = _context.Customers.Any(x => x.CustomerName.ToLower() == customer.CustomerName.ToLower() && x.CustomerId != customer.CustomerId);
             {
-                existingdata.Address = customer.Address;
+                return new CustomerResult { Success = false };
+            }
+             existingdata.Address = customer.Address;
                 existingdata.CustomerName = customer.CustomerName;
                 existingdata.ContactNumber = customer.ContactNumber;
                 _context.Customers.Update(existingdata);
                 _context.SaveChanges();
-                return true;
-            }
-            return false;
+                return new CustomerResult { Success = true, Data = customer};
         }
     }
 }

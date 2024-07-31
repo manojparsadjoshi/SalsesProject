@@ -28,6 +28,7 @@ var purchasemasterdetailcontroller = function () {
 
         // Check if there are any detail items
         if (!purchaseData.purchaseDetail || purchaseData.purchaseDetail.length === 0) {
+            toastr.error("Some field is required!");
             alert("Add at least one item.");
             return;
         }
@@ -45,6 +46,7 @@ var purchasemasterdetailcontroller = function () {
                     self.resetForm();
                     self.getData();
                     $('#purchaseModal').modal('hide');
+                    toastr.success(" Purchase Update Successfully.");
                 })
                 .fail(function (err) {
                     console.error("Error updating purchase:", err);
@@ -61,6 +63,7 @@ var purchasemasterdetailcontroller = function () {
                     self.resetForm();
                     self.getData();
                     $('#purchaseModal').modal('hide');
+                    toastr.success(" New Purchase Add Successfully.");
                 })
                 .fail(function (err) {
                     console.error("Error adding purchase:", err);
@@ -88,6 +91,7 @@ var purchasemasterdetailcontroller = function () {
                         return item.id() === model.id();
                     });
                     $('#deleteConfirmModal').modal('hide');
+                    toastr.success("Purchase Delete Successfully.");
                 })
                 .fail(function (err) {
                     console.error("Error deleting purchase:", err);

@@ -9,7 +9,9 @@ var VendorModel = function (item) {
         required: { message: "Vender name is Required." }
     });
     self.contract = ko.observable(item.contract || '').extend({
-        required: { message: "Vender Contract Number Is Required." }
+        required: { message: "Vender Contract Number Is Required." },
+        maxLength: { params: 10, message: "Contact No must not exceed 10 characters." },
+        minLength: { params: 10, message: "Contact No must be 10 characters long." }
     });
     self.address = ko.observable(item.address || '').extend({
         required: { message: "Vender Address Is Required." }

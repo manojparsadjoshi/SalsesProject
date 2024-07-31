@@ -26,7 +26,7 @@ namespace SalsesProject.Controllers.API
             return Ok(customers);
         }
         [HttpPost("Add")]
-        public bool Create(CustomerModel customer)
+        public CustomerResult Create(CustomerModel customer)
         {
             return _services.Create(customer);
         }
@@ -37,11 +37,9 @@ namespace SalsesProject.Controllers.API
             return customer;
         }
         [HttpPut("id")]
-        public bool Update(CustomerModel customer)
+        public CustomerResult Update(CustomerModel customer)
         {
-            _services.Update(customer); 
-            return true;
-          
+            return  _services.Update(customer);      
         }
         [HttpDelete("id")]
         public int Delete(int id)

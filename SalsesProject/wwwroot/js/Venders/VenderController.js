@@ -1,5 +1,6 @@
 ﻿/// <reference path="../knockout.js" />
 /// <reference path="vendermodel.js" />
+/// <reference path="vendermodel.js" />
 
 const mode = {
     create: 1,
@@ -29,8 +30,13 @@ var VendorController = function () {
 
     self.AddVendor = function () {
 
-        var vendortest = self.mode() == mode.create ?self.NewVendor(): self.SelectedVendor();
+        var vendortest = self.mode() == mode.create ? self.NewVendor() : self.SelectedVendor();
+        //if (vender.address == '') {
+        //    toastr.error("")
+        //}
+
         if (!vendortest.isValid()) {
+            toastr.error("Some field is missing");
             vendortest.errors.showAllMessages();
             return;
         }
@@ -44,6 +50,8 @@ var VendorController = function () {
                         self.GetDatas();
                         self.CloseModel();
                         $('#vendorModal').modal('hide');
+                      //  toastr.errors.("fill the require field.")
+                        toastr.success("New Vender Add Successfully.");
                     });
                 break;
             case 2:
@@ -53,6 +61,7 @@ var VendorController = function () {
                         self.GetDatas();
                         self.CloseModel();
                         $('#vendorModal').modal('hide');
+                        toastr.success("New Vender Update Successfully.");
                     })
                     .fail(function (err) {
                         console.log(err);
@@ -79,6 +88,7 @@ var VendorController = function () {
                     console.log("Delete successful", result);
                     self.CurrentVendor.remove(model);
                     $('#deleteConfirmModal').modal('hide');
+                    toastr.success(" Vender Delete Successfully.");
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
                     console.error("Delete failed", jqXHR.status, textStatus, errorThrown);

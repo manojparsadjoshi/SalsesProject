@@ -10,7 +10,9 @@ var customerModel = function (item)
         required: { message: "Full Name Is Required." }
     });
     self.contactNumber = ko.observable(item.contactNumber || '').extend({
-        required: { message: "Contract Number Is Required." }
+        required: { message: "Contract Number Is Required." },
+        maxLength: { params: 10, message: "Contact No must not exceed 10 characters." },
+        minLength: { params: 10, message: "Contact No must be 10 characters long." }
     });
     self.address = ko.observable(item.address || '').extend({
         required: { message: "Address Is Required." }

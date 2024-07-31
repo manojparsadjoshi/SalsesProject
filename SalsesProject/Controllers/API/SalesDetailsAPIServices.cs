@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sales.Services.MasterDetail;
 using SalsesProject.Models.VM;
+using static Sales.Services.MasterDetail.SalesDetailsServices;
 
 namespace SalsesProject.Controllers.API
 {
@@ -25,12 +26,12 @@ namespace SalsesProject.Controllers.API
             return _salesDetailsServices.GetById(id);
         }
         [HttpPost]
-        public bool Add(SalesMasterVM vm)
+        public ResponseModel Add(SalesMasterVM vm)
         {
             return _salesDetailsServices.Create(vm);
         }
         [HttpPut]
-        public bool Update(SalesMasterVM obj)
+        public ResponseModel Update(SalesMasterVM obj)
         {
             return _salesDetailsServices.Update(obj);
         }

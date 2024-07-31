@@ -7,15 +7,43 @@ using SalsesProject.Models.VM;
 namespace Sales.Services.MasterDetail
 {
     public class SalesDetailsServices : ISalesDetailsServices
-
     {
+        public class ResponseModel
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
+
         private readonly ApplicationDbContext _context;
         public SalesDetailsServices(ApplicationDbContext context)
         {
             _context = context;
         }
-        public bool Create(SalesMasterVM model)
+        private string GetItemName(int ItemId)
         {
+            var itemsdata = _context.Items.FirstOrDefault(x => x.ItemId == ItemId);
+            return itemsdata.ItemName;
+        }
+        private bool IsItemAvailable(int itemId, int quentity)
+        {
+            var currentItemInfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == itemId);
+            return currentItemInfo != null && currentItemInfo.Quentity >= quentity;
+        }
+        public ResponseModel Create(SalesMasterVM model)
+        {
+            if (model.Sales.Count == 0)
+            {
+                return new ResponseModel { Success = false, Message = "No items to add." };
+            }
+            foreach (var item in model.Sales)
+            {
+                if (!IsItemAvailable(item.ItemId, item.Quantity))
+                {
+                    string itemName = GetItemName(item.ItemId);
+                    return new ResponseModel { Success = false, Message = $"Item {itemName} is not available in the required quantity." };
+
+                }
+            }
             var masterData = new SalesMasterModel()
             {
                 Id = 0,
@@ -69,9 +97,9 @@ namespace Sales.Services.MasterDetail
                     _context.InfoHistoryModels.Add(historyInfo);
                     _context.SaveChanges();
                 }
-                return true;
+                
             }
-            return false;
+            return new ResponseModel { Success = true, Message = "Sales added successfully." };
         }
 
         public int Delete(int id)
@@ -92,7 +120,7 @@ namespace Sales.Services.MasterDetail
                         var CurrentItemsInfo = _context.itemCurrentInfos.FirstOrDefault(x => x.ItemId == item.ItemId);
                         if (CurrentItemsInfo != null)
                         {
-                            CurrentItemsInfo.Quentity -= item.Quantity;
+                            CurrentItemsInfo.Quentity += item.Quantity;
                             _context.itemCurrentInfos.Update(CurrentItemsInfo);
                             _context.SaveChanges();
                         }
@@ -190,15 +218,44 @@ namespace Sales.Services.MasterDetail
             }
         }
 
-        public bool Update(SalesMasterVM obj)
+        public ResponseModel Update(SalesMasterVM obj)
         {
+            if (obj.Sales.Count == 0)
+            {
+                return new ResponseModel { Success = false, Message = "No items to update." };
+            }
             var existingmasterdata = _context.masterModels.Find(obj.Id);
             if (existingmasterdata == null)
             {
-                return false;
+                return new ResponseModel { Success = false, Message = "No items to update." };
             }
             else
             {
+                // Check item availability
+                foreach (var item in obj.Sales)
+                {
+                    var existingItem = _context.DetailsModels
+                        .FirstOrDefault(x => x.SalesMasterId == existingmasterdata.Id && x.ItemId == item.ItemId);
+
+                    //int quantityDifference;
+                    //if ( existingItem != null)
+                    //{
+                    //     quantityDifference = item.Quantity - existingItem.Quantity;
+                    //}
+                    //else
+                    //{
+                    //    quantityDifference = item.Quantity;
+                    //}
+
+                    int quantityDifference = existingItem != null ? item.Quantity - existingItem.Quantity : item.Quantity;
+
+
+                    if (quantityDifference > 0 && !IsItemAvailable(item.ItemId, quantityDifference))
+                    {
+                        string itemName = GetItemName(item.ItemId);
+                        return new ResponseModel { Success = false, Message = $"Item {itemName} is not available in the required quantity." };
+                    }
+                }
                 existingmasterdata.SalesDate = obj.SalesDate;
                 existingmasterdata.CustomerId = obj.CustomerId;
                 existingmasterdata.InvoiceNumber = obj.InvoiceNumber;
@@ -227,7 +284,7 @@ namespace Sales.Services.MasterDetail
                         ItemId = item.ItemId,
                         Quentity = item.Quantity,
                         TransDate = DateTime.Now,
-                        StockInOut = StockInOut.In,
+                        StockInOut = StockInOut.Out,
                         TransactionType = TransactionType.sales
                     };
                     _context.InfoHistoryModels.Add(historyinfo);
@@ -299,7 +356,7 @@ namespace Sales.Services.MasterDetail
                         _context.SaveChanges();
                     }
                 }
-                return true;
+                return new ResponseModel { Success = true, Message = "Sales updated successfully." };
             };
         }
         public IEnumerable<GetCustomersNameVM> GetCustomersName()
@@ -312,13 +369,16 @@ namespace Sales.Services.MasterDetail
             return customers;
         }
         public IEnumerable<GetItemsNameVM> GetItemsName()
-        {
-            var items = _context.Items.Select(item => new GetItemsNameVM
-            {
-                ItemId = item.ItemId,
-                ItemName = item.ItemName,
-                Unit = item.Unit              
-            }).ToList();
+        { var items = (from item in _context.Items
+                       join Itemsquentity in _context.itemCurrentInfos
+                       on item.ItemId equals Itemsquentity.ItemId
+                       select new GetItemsNameVM
+                       {
+                           ItemId = item.ItemId,
+                           ItemName = item.ItemName,
+                           Unit = item.Unit,
+                           Quentity = Itemsquentity.Quentity
+                       }).ToList();
             return items;
         }
     }

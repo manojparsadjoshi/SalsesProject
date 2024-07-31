@@ -13,6 +13,8 @@ namespace Sales.Entity
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [StringLength(10)]
         public  string Contract {  get; set; }
         public string Address { get; set; }
 

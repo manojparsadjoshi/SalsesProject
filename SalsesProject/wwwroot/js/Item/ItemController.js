@@ -69,19 +69,27 @@ var itemController = function () {
 
             ajax.request(url, method, data)
                 .done(function (result) {
-                    if (self.mode() === mode.create) {
-                        self.ItemList.push(new itemModel(result));
-                    } else {
-                        self.ItemList.replace(self.SelectedList(), new itemModel(result));
+                    if (result.success) {
+                        if (self.mode() === mode.create) {
+                            self.ItemList.push(new itemModel(result));
+                        } else {
+                            self.ItemList.replace(self.SelectedList(), new itemModel(result));
+                        }
+                        self.resetForm();
+                        self.getdata();
+                        self.hideModal();
+                        toastr.success("New Item Add Successfully.");
+                        // toastr.success(" Vender Update Successfully.");
                     }
-                    self.resetForm();
-                    self.getdata();
-                    self.hideModal();
+                    else {
+                        alert("Item name already exists!");
+                    }
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     console.error("Error saving item: ", textStatus, errorThrown);
                 });
         } else {
+            toastr.error("Sme field is required");
             self.NewItem().errors.showAllMessages();
         }
     };
@@ -90,6 +98,7 @@ var itemController = function () {
         ajax.delete(baseUrl + "?id=" + model.itemId())
             .done((result) => {
                 self.ItemList.remove(model);
+                toastr.success("Delete successfully.");
             })
             .fail((jqXHR, textStatus, errorThrown) => {
                 console.error("Error deleting item: ", textStatus, errorThrown);

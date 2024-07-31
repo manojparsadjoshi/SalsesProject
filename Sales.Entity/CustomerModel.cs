@@ -10,7 +10,8 @@ namespace SalsesProject.Models
         public int CustomerId { get; set; }
         [Required]
         public string CustomerName { get; set; }
-        [Required]  
+
+        [StringLength(10)]
         public string ContactNumber { get; set; }
         [Required]
         public string Address { get; set; }

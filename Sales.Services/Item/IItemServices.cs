@@ -6,8 +6,8 @@ namespace Sales.Services.Item
     {
         List<ItemsModel> GetAll();
         ItemsModel GetById(int id);
-        bool Create(ItemsModel item);
-        bool Update(ItemsModel item);
+        ItemResult Create(ItemsModel item);
+        ItemResult Update(ItemsModel item);
         int Delete(int id);
     }
 }

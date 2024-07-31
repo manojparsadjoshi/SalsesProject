@@ -1,4 +1,5 @@
 ﻿/// <reference path="../knockout.js" />
+/// <reference path="masterdeteilmodel.js" />
 
 const mode = {
     create: 1,
@@ -11,19 +12,20 @@ var masterdetailsController = function () {
     self.SalesList = ko.observableArray([]);
     self.CustomersNameList = ko.observableArray([]);
     self.ItemsNameList = ko.observableArray([]);
-    self.NewSales = ko.observable(new mastermodelVM());
+    self.NewSales = ko.observable(new mastermodelVM({}, self));
     self.SelectedSales = ko.observable(new mastermodelVM());
     self.IsUpdated = ko.observable(false);
     self.purchaseToDelete = ko.observable(null);
 
     // Get All Data
     self.getData = function () {
+        console.log("Fetching Data...");
         ajax.get(baseUrl + "/GetAll").then(function (result) {
-            self.SalesList(result.map(item => new mastermodelVM(item)));
+            console.log("data", result);
+            self.SalesList(result.map(item => new mastermodelVM(item, self)));
         });
     };
     self.getData();
-    masterdetailsController.ItemsNameList = self.ItemsNameList;
 
     // Get Customer Names
     self.getCustomersName = function () {
@@ -43,14 +45,12 @@ var masterdetailsController = function () {
     self.getItemsName = function () {
         var url = baseUrl + "/GetItemsName";
         return ajax.get(url).then(function (data) {
+            // console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
-                return new itemnamemodel({
-                    itemId: item.itemId,
-                    itemName: item.itemName,
-                    unit: item.unit
-                });
+                return new itemnamemodel(item);
             });
             self.ItemsNameList(mappedProducts);
+            console.log("Items Data: ", self.ItemsNameList());
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error fetching itemsname: ", textStatus, errorThrown);
         });
@@ -64,6 +64,7 @@ var masterdetailsController = function () {
         // Check if there are any valid detail items
         var validItems = salesData.sales.filter(item => item.itemId && item.quantity > 0);
         if (validItems.length === 0) {
+            toastr.error("Some field is required");
             alert("Please add at least one valid item to the sale.");
             return;
         }
@@ -74,8 +75,7 @@ var masterdetailsController = function () {
         if (self.IsUpdated()) {
             ajax.put(baseUrl + "/Update", JSON.stringify(salesData))
                 .done(function (result) {
-                    if (result) {
-                        debugger;
+                    if (result.success) {
                         var updatedSales = new mastermodelVM(result);
                         var index = self.SalesList().findIndex(function (item) {
                             return item.id() === updatedSales.id();
@@ -86,10 +86,11 @@ var masterdetailsController = function () {
                         self.resetForm();
                         self.getData();
                         $('#salesModal').modal('hide');
-                        alert("Updated Successfully"); // Display success message
+                        toastr.success("Sales Updated Successfully.");
+                        alert(result.message || "Updated Successfully");
                     } else {
-                        alert( "Failes to update sales.");// Display error message
-                    }      
+                        alert(result.message || "Failed to update sales.");
+                    }
                 })
                 .fail(function (err) {
                     console.error("Error updating sales:", err);
@@ -102,20 +103,15 @@ var masterdetailsController = function () {
         } else {
             ajax.post(baseUrl + "/Add", JSON.stringify(salesData))
                 .done(function (result) {
-                    debugger;
-                    if (result) {
-                        debugger;
+                    if (result.success) {
                         self.SalesList.push(new mastermodelVM(result));
                         self.resetForm();
                         self.getData();
                         $('#salesModal').modal('hide');
-                        debugger;
-                        alert( "Added successfully."); //Display success message
-                    }
-                    else
-                    {
-                        debugger;
-                        alert("Failed to add sales.");//Dispaly error message
+                        toastr.success("Sales Added Successfully.");
+                       // alert(result.message || "Added successfully.");
+                    } else {
+                        alert(result.message || "Failed to add sales.");
                     }
                 })
                 .fail(function (err) {
@@ -136,16 +132,16 @@ var masterdetailsController = function () {
         }, 100);
     };
 
-    self.confirmDelete = function () {
+    self.DeleteSalesConfirmed = function () {
         var model = self.purchaseToDelete();
         if (model) {
             ajax.delete(baseUrl + "/Delete?id=" + model.id())
-          
                 .done(function () {
                     self.SalesList.remove(function (item) {
                         return item.id() === model.id();
                     });
                     $('#deleteConfirmModal').modal('hide');
+                    toastr.success("Sales Deleted Successfully.");
                 })
                 .fail(function (err) {
                     console.error("Error deleting sale:", err);
@@ -159,15 +155,18 @@ var masterdetailsController = function () {
         if (clonedModel.salesDate) {
             clonedModel.salesDate = new Date(clonedModel.salesDate).toISOString().slice(0, 16);
         }
-        self.NewSales(new mastermodelVM(clonedModel));
+        // Force the itemId to update after setting the NewSales
+        self.NewSales(new mastermodelVM(clonedModel, self));
+        self.NewSales().sales().forEach(function (sale) {
+            sale.itemId.valueHasMutated();
+        });
         self.IsUpdated(true);
         $('#salesModal').modal('show');
     };
 
     self.resetForm = function () {
-        self.NewSales(new mastermodelVM());
+        self.NewSales(new mastermodelVM({}, self));
         self.IsUpdated(false);
-        self.NewSales().sales.push(new detailsmodelVM());
     };
 
     self.openCreateModal = function () {
@@ -176,7 +175,7 @@ var masterdetailsController = function () {
     };
 
     self.AddItem = function () {
-        self.NewSales().sales.push(new detailsmodelVM());
+        self.NewSales().sales.push(new detailsmodelVM({}, self));
     };
     self.removeItem = function (item) {
         self.NewSales().sales.remove(item);
@@ -220,4 +219,5 @@ var ajax = {
         });
     }
 };
+
 
