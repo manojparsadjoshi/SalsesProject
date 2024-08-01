@@ -57,6 +57,37 @@ var salesReportController = function () {
         document.body.removeChild(link);
     };
 
+    self.downloadPDF = function () {
+        const { jsPDF } = window.jspdf;
+        var doc = new jsPDF();
+
+        var data = self.filteredSalesReportList();
+        var columns = ["S.N", "Date", "InvoiceNumber", "CustomerName", "ItemName", "Quantity", "Price", "UnitAmount", "BillAmount", "Discount", "NetAmount"];
+        var rows = [];
+
+        data.forEach(function (item, index) {
+            rows.push([
+                index + 1,
+                item.salesDate(),
+                item.invoiceNumber(),
+                item.customerName(),
+                item.itemName(),
+                item.quentity(),
+                item.quentityPrice(),
+                item.quentityAmount(),
+                item.billAmount(),
+                item.discountAmount(),
+                item.netAmount()
+            ]);
+        });
+
+        doc.autoTable({
+            head: [columns],
+            body: rows,
+        });
+        doc.save('sales_report.pdf');
+    };
+
     // Call getData when the controller is instantiated
     self.getData();
 }

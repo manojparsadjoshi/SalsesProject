@@ -1,10 +1,11 @@
 ﻿<div class="container mt-4">
     <h2 style="text-align: center;">Sales Report</h2>
     <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Search Report..." data-bind="value: searchTerm, valueUpdate: 'input'">
+        <input type="text" class="form-control" placeholder="Search Report By Name..." data-bind="value: searchTerm, valueUpdate: 'input'">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-12 text-end">
         <button class="btn btn-primary" data-bind="click: downloadExcel"> Download Excel</button>
+        <button class="btn btn-secondary" data-bind="click: downloadPDF">Download PDF</button>
     </div>
     <table class="table table-striped mt-4">
         <thead>
@@ -42,6 +43,8 @@
 
 @section Scripts
 {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
     <script src="~/js/knockout.js"></script>
     <script src="~/js/salesreport/salesreportmodelvm.js"></script>
     <script src="~/js/salesreport/salesreportcontroller.js"></script>
