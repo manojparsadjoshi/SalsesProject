@@ -62,6 +62,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();

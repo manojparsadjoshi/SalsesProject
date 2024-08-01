@@ -1,0 +1,51 @@
+﻿<div class="container mt-4">
+    <h2 style="text-align: center;">Sales Report</h2>
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search Report..." data-bind="value: searchTerm, valueUpdate: 'input'">
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>S.N</th>
+                <th>Date</th>
+                <th>InvoiceNumber</th>
+                <th>CustomerName</th>
+                <th>ItemName</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>UnitAmount</th>
+                <th>BillAmount</th>
+                <th>Discount</th>
+                <th>NetAmount</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: filteredSalesReportList">
+            <tr>
+                <td data-bind="text: $index() + 1"></td>
+                <td data-bind="text: salesDate"></td>
+                <td data-bind="text: invoiceNumber"></td>
+                <td data-bind="text: customerName"></td>
+                <td data-bind="text: itemName"></td>
+                <td data-bind="text: quentity"></td>
+                <td data-bind="text: quentityPrice"></td>
+                <td data-bind="text: quentityAmount"></td>
+                <td data-bind="text: billAmount"></td>
+                <td data-bind="text: discountAmount"></td>
+                <td data-bind="text: netAmount"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/salesreport/salesreportmodelvm.js"></script>
+    <script src="~/js/salesreport/salesreportcontroller.js"></script>
+    <script>
+        $(document).ready(function () {
+            var obj = new salesReportController();
+            ko.applyBindings(obj);
+        });
+    </script>
+}

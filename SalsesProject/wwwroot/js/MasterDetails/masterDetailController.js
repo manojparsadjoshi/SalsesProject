@@ -45,7 +45,7 @@ var masterdetailsController = function () {
     self.getItemsName = function () {
         var url = baseUrl + "/GetItemsName";
         return ajax.get(url).then(function (data) {
-            // console.log("Products received: ", data);
+             console.log("Products received: ", data);
             var mappedProducts = ko.utils.arrayMap(data, (item) => {
                 return new itemnamemodel(item);
             });

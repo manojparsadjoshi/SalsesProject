@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sales.Db;
 using Sales.Entity;
+using Sales.Services.MasterDetail.ViewModel;
 using SalsesProject.Models;
 using SalsesProject.Models.VM;
 
@@ -380,6 +381,27 @@ namespace Sales.Services.MasterDetail
                            Quentity = Itemsquentity.Quentity
                        }).ToList();
             return items;
+        }
+        public List<SalesReportVM> GetSalesReports()
+        {
+            var query = from sm in _context.masterModels
+                        join sd in _context.DetailsModels on sm.Id equals sd.SalesMasterId
+                        join c in _context.Customers on sm.CustomerId equals c.CustomerId
+                        join i in _context.Items on sd.ItemId equals i.ItemId
+                        select new SalesReportVM
+                        {
+                            SalesDate = sm.SalesDate,
+                            InvoiceNumber = sm.InvoiceNumber,
+                            DiscountAmount = sm.Discount,
+                            BillAmount = sm.BillAmount,
+                            NetAmount = sm.NetAmount,
+                            CustomerName = c.CustomerName,
+                            ItemName = i.ItemName,
+                            QuentityPrice = sd.Price,
+                            Quentity = sd.Quantity,
+                            QuentityAmount = sd.Amount,
+                        };
+            return query.ToList();
         }
     }
 }

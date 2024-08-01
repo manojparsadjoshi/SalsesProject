@@ -1,4 +1,5 @@
-﻿using SalsesProject.Models.VM;
+﻿using Sales.Services.MasterDetail.ViewModel;
+using SalsesProject.Models.VM;
 using static Sales.Services.MasterDetail.SalesDetailsServices;
 
 namespace Sales.Services.MasterDetail
@@ -12,5 +13,6 @@ namespace Sales.Services.MasterDetail
         int Delete(int id);
         IEnumerable<GetCustomersNameVM> GetCustomersName();
         IEnumerable<GetItemsNameVM> GetItemsName();
+        List<SalesReportVM> GetSalesReports();
     }
 }

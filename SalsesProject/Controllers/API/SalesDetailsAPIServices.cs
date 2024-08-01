@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Services.MasterDetail;
+using Sales.Services.MasterDetail.ViewModel;
 using SalsesProject.Models.VM;
 using static Sales.Services.MasterDetail.SalesDetailsServices;
 
@@ -50,6 +51,11 @@ namespace SalsesProject.Controllers.API
         public IEnumerable<GetItemsNameVM> GetItemsName()
         {
             return _salesDetailsServices.GetItemsName();
+        }
+        [HttpGet]
+        public List<SalesReportVM> GetSalesReports()
+        {
+            return _salesDetailsServices.GetSalesReports();
         }
 
     }
