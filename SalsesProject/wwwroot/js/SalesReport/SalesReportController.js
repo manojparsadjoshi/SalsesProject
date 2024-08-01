@@ -24,6 +24,39 @@ var salesReportController = function () {
         }
     });
 
+    self.downloadExcel = function () {
+        var data = self.filteredSalesReportList();
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        // Add headers
+        csvContent += "S.N,Date,InvoiceNumber,CustomerName,ItemName,Quantity,Price,UnitAmount,BillAmount,Discount,NetAmount\n";
+
+        // Add data rows
+        data.forEach(function (item, index) {
+            csvContent += [
+                index + 1,
+                item.salesDate(),
+                item.invoiceNumber(),
+                item.customerName(),
+                item.itemName(),
+                item.quentity(),
+                item.quentityPrice(),
+                item.quentityAmount(),
+                item.billAmount(),
+                item.discountAmount(),
+                item.netAmount()
+            ].join(",") + "\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "sales_report.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     // Call getData when the controller is instantiated
     self.getData();
 }
