@@ -54,5 +54,11 @@ namespace SalsesProject.Controllers.API
         {
            return _purchaseMasterSercices.GetVendersNames();
         }
+
+        [HttpGet("Report")]
+        public List<PurchaseReportVM> GetPurchaseReports()
+        {
+            return _purchaseMasterSercices.GetPurchaseReports();
+        }
     }
 }

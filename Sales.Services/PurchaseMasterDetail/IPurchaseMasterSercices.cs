@@ -18,5 +18,6 @@ namespace Sales.Services.PurchaseMasterDetail
         int Delete(int id);
         public IEnumerable<GetVendersName> GetVendersNames();
         public IEnumerable<GetItemsNameVM> GetItemsNames();
+        public List<PurchaseReportVM> GetPurchaseReports();
     }
 }

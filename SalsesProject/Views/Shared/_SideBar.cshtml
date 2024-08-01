@@ -73,7 +73,12 @@
                 <span class="menu-title">Sales Report</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="PurchaseReport" asp-action="Index">
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                <span class="menu-title">Purchase Report</span>
+            </a>
+        </li>
         <li>
             <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm">
                 <button type="submit" class="btn btn-link nav-link">Sign Out</button>

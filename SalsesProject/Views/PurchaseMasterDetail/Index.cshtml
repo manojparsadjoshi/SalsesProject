@@ -26,6 +26,10 @@
                                 </select>
                             </div>
                             <div class="col-md-4 form-group">
+                                <label>PurchaseDate:</label>
+                                <input type="datetime-local" class="form-control" data-bind="value: purchaseDate">
+                            </div>
+                            <div class="col-md-4 form-group">
                                 <label>Invoice Number:</label>
                                 <input type="text" class="form-control" data-bind="value: invoiceNumber">
                             </div>
@@ -95,6 +99,7 @@
             <tr>
                 <th>S.N.</th>
                 <th>Vendor Name</th>
+                <th>PurchaseDate</th>
                 <th>Invoice Number</th>
                 <th>Bill Amount</th>
                 <th>Discount Amount</th>
@@ -106,6 +111,7 @@
             <tr>
                 <td data-bind="text: $index() + 1"></td>
                 <td data-bind="text: vendorName"></td>
+                <td data-bind="text:purchaseDate"></td>
                 <td data-bind="text: invoiceNumber"></td>
                 <td data-bind="text: billAmount"></td>
                 <td data-bind="text: discount"></td>

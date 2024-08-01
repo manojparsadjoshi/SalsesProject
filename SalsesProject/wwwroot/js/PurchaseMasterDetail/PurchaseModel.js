@@ -4,6 +4,7 @@ var masterpurchaseVM = function (item) {
     item = item || {};
     self.id = ko.observable(item.id || 0);
     self.venderId = ko.observable(item.venderId || 0);
+    self.purchaseDate = ko.observable(item.purchaseDate || 0);
     self.vendorName = ko.observable(item.vendorName || '');
     self.invoiceNumber = ko.observable(item.invoiceNumber || '');
     self.billAmount = ko.observable(item.billAmount || 0);

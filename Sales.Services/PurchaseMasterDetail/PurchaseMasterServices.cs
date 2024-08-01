@@ -33,6 +33,7 @@ namespace Sales.Services.PurchaseMasterDetail
                 {
                     Id = 0,
                     VenderId = model.VenderId,
+                    PurchaseDate = DateTime.Now,
                     InvoiceNumber = model.InvoiceNumber,
                     BillAmount = model.BillAmount,
                     Discount = model.Discount,
@@ -157,6 +158,7 @@ namespace Sales.Services.PurchaseMasterDetail
                         Id = masterdata.Id,
                         VenderId = masterdata.VenderId,
                         VendorName = vendorsdata.Name,
+                        PurchaseDate = masterdata.PurchaseDate,
                         InvoiceNumber = masterdata.InvoiceNumber,
                         BillAmount = masterdata.BillAmount,
                         Discount = masterdata.Discount,
@@ -165,16 +167,16 @@ namespace Sales.Services.PurchaseMasterDetail
 
                     masterdatas.PurchaseDetail = (from d in detailsdata
 
-                                                   select new PurchaseDetailVM
-                                                   {
-                                                       Id = d.Id,
-                                                       ItemId = d.ItemId,
-                                                       ItemName = d.Item.ItemName,
-                                                       Unit = d.Unit,
-                                                       Quentity = d.Quentity,
-                                                       Price = d.Price,
-                                                       Amount = d.Amount
-                                                   }).ToList();
+                                                  select new PurchaseDetailVM
+                                                  {
+                                                      Id = d.Id,
+                                                      ItemId = d.ItemId,
+                                                      ItemName = d.Item.ItemName,
+                                                      Unit = d.Unit,
+                                                      Quentity = d.Quentity,
+                                                      Price = d.Price,
+                                                      Amount = d.Amount
+                                                  }).ToList();
                     dataList.Add(masterdatas);
                 }
             }
@@ -198,22 +200,23 @@ namespace Sales.Services.PurchaseMasterDetail
                     VenderId = masterdata.VenderId,
                     VendorName = vendordatas.Name,
                     InvoiceNumber = masterdata.InvoiceNumber,
+                    PurchaseDate = masterdata.PurchaseDate,
                     BillAmount = masterdata.BillAmount,
                     Discount = masterdata.Discount,
                     NetAmount = masterdata.NetAmount
                 };
 
                 masterdatas.PurchaseDetail = (from detail in detaildatas
-                                               select new PurchaseDetailVM
-                                               {
-                                                   Id = detail.Id,
-                                                   ItemId = detail.Item.ItemId,
-                                                   ItemName = detail.Item.ItemName,
-                                                   Unit = detail.Unit,
-                                                   Quentity = detail.Quentity,
-                                                   Price = detail.Price,
-                                                   Amount = detail.Amount
-                                               }).ToList();
+                                              select new PurchaseDetailVM
+                                              {
+                                                  Id = detail.Id,
+                                                  ItemId = detail.Item.ItemId,
+                                                  ItemName = detail.Item.ItemName,
+                                                  Unit = detail.Unit,
+                                                  Quentity = detail.Quentity,
+                                                  Price = detail.Price,
+                                                  Amount = detail.Amount
+                                              }).ToList();
                 return masterdatas;
             }
         }
@@ -248,7 +251,9 @@ namespace Sales.Services.PurchaseMasterDetail
 
             // Update master data
             existingMasterData.VenderId = model.VenderId;
+            existingMasterData.PurchaseDate = model.PurchaseDate;
             existingMasterData.InvoiceNumber = model.InvoiceNumber;
+            existingMasterData.PurchaseDate = model.PurchaseDate;
             existingMasterData.BillAmount = model.BillAmount;
             existingMasterData.Discount = model.Discount;
             existingMasterData.NetAmount = model.NetAmount;
@@ -323,6 +328,27 @@ namespace Sales.Services.PurchaseMasterDetail
             return true;
         }
 
-    }
+        public List<PurchaseReportVM> GetPurchaseReports()
+        {
+            var query = from pm in _context.purchaseMasterModels
+                        join ps in _context.purchaseMasterDetailModels on pm.Id equals ps.PurchaseMasterId
+                        join v in _context.venders on pm.VenderId equals v.Id
+                        join i in _context.Items on ps.ItemId equals i.ItemId
+                        select new PurchaseReportVM
+                        {
+                            InvoiceNumber = pm.InvoiceNumber,
+                            PurchaseDate = pm.PurchaseDate,
+                            VenderName = v.Name,
+                            ItemName = i.ItemName,
+                            Quentity = ps.Quentity,
+                            QuentityPrice = ps.Price,
+                            BillAmount = pm.BillAmount,
+                            Discount = pm.Discount,
+                            NetAmount = pm.NetAmount,
+                        };
+            return query.ToList();           
+        }
 
+    }
 }
+

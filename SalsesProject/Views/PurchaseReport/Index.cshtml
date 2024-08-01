@@ -1,0 +1,55 @@
+﻿<div class="container mt-4">
+    <h2 style="text-align: center;">Purchase Report</h2>
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search Report By Name..." data-bind="value: searchTerm, valueUpdate: 'input'">
+    </div>
+    <div class="col-md-12 text-end">
+        <button class="btn btn-primary" data-bind="click: downloadExcel">Download Excel</button>
+        <button class="btn btn-secondary" data-bind="click: downloadPDF">Download PDF</button>
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>S.N</th>
+                <th>Date</th>
+                <th>InvoiceNumber</th>
+                <th>VendorName</th>
+                <th>ItemName</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>BillAmount</th>
+                <th>Discount</th>
+                <th>NetAmount</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: filteredPurchaseReportList">
+            <tr>
+                <td data-bind="text: $index() + 1"></td>
+                <td data-bind="text: purchaseDate"></td>
+                <td data-bind="text: invoiceNumber"></td>
+                <td data-bind="text: venderName"></td>
+                <td data-bind="text: itemName"></td>
+                <td data-bind="text: quantity"></td>
+                <td data-bind="text: quantityPrice"></td>
+                <td data-bind="text: billAmount"></td>
+                <td data-bind="text: discount"></td>
+                <td data-bind="text: netAmount"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/purchasereportvm/purchasereportmodel.js"></script>
+    <script src="~/js/purchasereportvm/purchasereportcontroller.js"></script>
+    <script>
+        $(document).ready(function () {
+            var obj = new purchasecontroller();
+            ko.applyBindings(obj);
+        });
+    </script>
+}

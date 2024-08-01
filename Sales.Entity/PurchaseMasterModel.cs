@@ -16,6 +16,7 @@ namespace Sales.Entity
         [JsonIgnore]
 
         public VenderModel Vender { get; set; }
+        public DateTime PurchaseDate { get; set; }
         public int InvoiceNumber {  get; set; }
         public decimal BillAmount { get; set; }
         public decimal Discount {  get; set; }

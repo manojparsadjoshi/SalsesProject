@@ -12,6 +12,7 @@ namespace Sales.Services.PurchaseMasterDetail.ViewModel
         public int VenderId { get; set; }
         public string ? VendorName { get; set; }
         public int InvoiceNumber { get; set; }
+        public DateTime PurchaseDate { get; set; }
         public decimal BillAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal NetAmount { get; set; }
