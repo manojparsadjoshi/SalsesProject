@@ -173,7 +173,7 @@ namespace Sales.Services.MasterDetail
                                   select new SalesDetailsVM()
                                   {
                                       Id = d.Id,
-                                      ItemId = d.Id,
+                                      ItemId = d.ItemId,
                                       Unit = d.Unit,
                                       Quantity = d.Quantity,
                                       Price = d.Price,
