@@ -30,7 +30,7 @@ var purchasecontroller = function () {
         var csvContent = "data:text/csv;charset=utf-8,";
 
         // Add headers
-        csvContent += "S.N,Date,InvoiceNumber,VendorName,ItemName,Quantity,Price,UnitAmount,BillAmount,Discount,NetAmount\n";
+        csvContent += "S.N,Date,InvoiceNumber,VendorName,ItemName,Quantity,Price,BillAmount,Discount,NetAmount\n";
 
         // Add data rows
         data.forEach(function (item, index) {
@@ -62,7 +62,7 @@ var purchasecontroller = function () {
         var doc = new jsPDF();
 
         var data = self.filteredPurchaseReportList();
-        var columns = ["S.N", "Date", "InvoiceNumber", "VendorName", "ItemName", "Quantity", "Price", "UnitAmount", "BillAmount", "Discount", "NetAmount"];
+        var columns = ["S.N", "Date", "InvoiceNumber", "VendorName", "ItemName", "Quantity", "Price", "BillAmount", "Discount", "NetAmount"];
         var rows = [];
 
         data.forEach(function (item, index) {

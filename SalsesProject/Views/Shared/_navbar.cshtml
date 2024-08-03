@@ -90,22 +90,18 @@
                 </form>
             </li>
         </ul>
-        <ul class="navbar-nav navbar-nav-right ml-lg-auto">
-            <li class="nav-item nav-profile dropdown border-0">
-                <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
-                    <img class="nav-profile-img mr-2" alt="" src="/assets/images/faces/face1.jpg" />
-                    <span class="profile-name">Henry Klein</span>
-                </a>
-                <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item" href="#">
-                        <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log
-                    </a>
-                    <a class="dropdown-item" asp-controller="Login" asp-action="Index">
-                        <i class="mdi mdi-logout mr-2 text-primary"></i> Signup
-                    </a>
-                </div>
-            </li>
-        </ul>
+        <li>
+            <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm">
+                <button type="submit" class="btn btn-link nav-link">Log In</button>
+            </form>
+        </li>
+        <!-- Nav Item - Logout -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+                <i class="fas fa-fw fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
             <span class="mdi mdi-menu"></span>
         </button>

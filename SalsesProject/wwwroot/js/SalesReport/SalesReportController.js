@@ -29,7 +29,7 @@ var salesReportController = function () {
         var csvContent = "data:text/csv;charset=utf-8,";
 
         // Add headers
-        csvContent += "S.N,Date,InvoiceNumber,CustomerName,ItemName,Quantity,Price,UnitAmount,BillAmount,Discount,NetAmount\n";
+        csvContent += "S.N,Date,InvoiceNumber,CustomerName,ItemName,Quantity,Price,BillAmount,Discount,NetAmount\n";
 
         // Add data rows
         data.forEach(function (item, index) {
@@ -41,7 +41,6 @@ var salesReportController = function () {
                 item.itemName(),
                 item.quentity(),
                 item.quentityPrice(),
-                item.quentityAmount(),
                 item.billAmount(),
                 item.discountAmount(),
                 item.netAmount()
@@ -62,7 +61,7 @@ var salesReportController = function () {
         var doc = new jsPDF();
 
         var data = self.filteredSalesReportList();
-        var columns = ["S.N", "Date", "InvoiceNumber", "CustomerName", "ItemName", "Quantity", "Price", "UnitAmount", "BillAmount", "Discount", "NetAmount"];
+        var columns = ["S.N", "Date", "InvoiceNumber", "CustomerName", "ItemName", "Quantity", "Price", "BillAmount", "Discount", "NetAmount"];
         var rows = [];
 
         data.forEach(function (item, index) {
@@ -74,7 +73,6 @@ var salesReportController = function () {
                 item.itemName(),
                 item.quentity(),
                 item.quentityPrice(),
-                item.quentityAmount(),
                 item.billAmount(),
                 item.discountAmount(),
                 item.netAmount()
