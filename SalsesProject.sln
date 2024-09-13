@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entity", "Entity", "{CC5F60
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{24746B9F-BB96-4A6A-ABBE-3D019360993E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sales.Db", "Sales.Db\Sales.Db.csproj", "{629A03F7-801E-4BE6-9F8E-162D7DD48882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Db", "Sales.Db\Sales.Db.csproj", "{629A03F7-801E-4BE6-9F8E-162D7DD48882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sales.Entity", "Sales.Entity\Sales.Entity.csproj", "{02AECA8E-D400-4307-9049-7196BF6F77DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Entity", "Sales.Entity\Sales.Entity.csproj", "{02AECA8E-D400-4307-9049-7196BF6F77DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sales.Services", "Sales.Services\Sales.Services.csproj", "{7F312FC0-FCD0-4DD9-8E0D-F4ACE9F29796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Services", "Sales.Services\Sales.Services.csproj", "{7F312FC0-FCD0-4DD9-8E0D-F4ACE9F29796}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

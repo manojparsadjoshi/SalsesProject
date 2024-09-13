@@ -24,7 +24,7 @@ namespace Sales.Services.User
             {
                 _context.Users.Add(userdata);
                 _context.SaveChanges();
-                return true;
+                return true;            
             }
             return false;
         }

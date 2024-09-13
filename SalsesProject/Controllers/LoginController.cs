@@ -37,7 +37,8 @@ namespace SalsesProject.Controllers
                 if (user != null)
                 {
                     IdentityUtils.AddingClaimIdentity(model, user.Roless ?? "user", HttpContext);
-                    return RedirectToAction("Index", "Home");
+                    TempData["SuccessMessage"] = "Login successful!";
+                    return RedirectToAction("Index", "Home");          
                 }
                 else
                 {
@@ -52,6 +53,7 @@ namespace SalsesProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["SuccessMessage"] = "Log Out successful!";
             return RedirectToAction("Index", "LogIn");
         }
         public IActionResult SignUp()
@@ -68,11 +70,13 @@ namespace SalsesProject.Controllers
                     Username = model.Email,
                     Password = model.Password,
                     Roless = "user"
+                    
                 };
 
                 bool result = _userService.RegisterUser(user);
                 if (result)
                 {
+                    TempData["SuccessMessage"] = "Sign Up successful!";
                     return RedirectToAction("Index", "Login");
                 }
                 return View();

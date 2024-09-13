@@ -32,5 +32,14 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            $(document).ready(function () {
+                var successMessage = '@TempData["SuccessMessage"]';
+                if (successMessage) {
+                    toastr.success(successMessage);
+                }
+            });
+        </script>
     }
 }
