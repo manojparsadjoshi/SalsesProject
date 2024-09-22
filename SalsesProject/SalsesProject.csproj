@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\Report\PurchaseRPC.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0" />
@@ -26,8 +30,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Reports\Report\PurchaseRPC.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sales.Db\Sales.Db.csproj" />
     <ProjectReference Include="..\Sales.Services\Sales.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSet\Customer.Designer.cs">
+      <DependentUpon>Customer.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSet\DataSet\Customer.Designer.cs">
+      <DependentUpon>Customer.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSet\Customer.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Customer.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSet\DataSet\Customer.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Customer.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
   </ItemGroup>
 
 </Project>
